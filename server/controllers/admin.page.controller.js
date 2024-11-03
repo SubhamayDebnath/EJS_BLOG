@@ -1,3 +1,4 @@
+import User from '../models/user.model.js'
 const utilsLayout = "../views/layouts/utils";
 const adminLayout = "../views/layouts/admin";
 const dashboard = async (req, res, next) => {
@@ -6,7 +7,8 @@ const dashboard = async (req, res, next) => {
       title: "Dashboard",
       description: "Welcome to Dashboard",
     };
-    res.render("admin/index", { locals, layout: adminLayout ,user:req.user });
+    const numberOfUsers = await User.countDocuments();
+    res.render("admin/index", { locals, layout: adminLayout ,user:req.user, numberOfUsers });
   } catch (error) {
     console.log(`Dashboard error : ${error}`);
     res.redirect("/error");
@@ -18,7 +20,7 @@ const articlesPage = async (req, res, next) => {
       title: "Article",
       description: "Welcome to Article",
     };
-    res.render("admin/articles", { locals, layout: adminLayout });
+    res.render("admin/articles", { locals, layout: adminLayout,user:req.user });
   } catch (error) {
     console.log(`Dashboard error : ${error}`);
     res.redirect("/error");
@@ -30,7 +32,7 @@ const categoriesPage = async (req, res, next) => {
       title: "Categories",
       description: "Welcome to Categories",
     };
-    res.render("admin/categories", { locals, layout: adminLayout });
+    res.render("admin/categories", { locals, layout: adminLayout,user:req.user });
   } catch (error) {
     console.log(`Categories error : ${error}`);
     res.redirect("/error");
@@ -42,7 +44,7 @@ const usersPage = async (req, res, next) => {
       title: "Users",
       description: "Welcome to Users",
     };
-    res.render("admin/users", { locals, layout: adminLayout });
+    res.render("admin/users", { locals, layout: adminLayout,user:req.user });
   } catch (error) {
     console.log(`Users error : ${error}`);
     res.redirect("/error");
@@ -54,7 +56,7 @@ const contactPage = async (req, res, next) => {
       title: "Contact Form",
       description: "Welcome to Contact Form",
     };
-    res.render("admin/contact", { locals, layout: adminLayout });
+    res.render("admin/contact", { locals, layout: adminLayout,user:req.user });
   } catch (error) {
     console.log(`Contact Form error : ${error}`);
     res.redirect("/error");
@@ -67,7 +69,7 @@ const addPostPage = async (req, res, next) => {
       title: "Add Post Form",
       description: "Welcome to Add Post Form",
     };
-    res.render("admin/form/addPostForm", { locals, layout: adminLayout });
+    res.render("admin/form/addPostForm", { locals, layout: adminLayout,user:req.user });
   } catch (error) {
     console.log(`Add Post error : ${error}`);
     res.redirect("/error");
@@ -79,7 +81,7 @@ const addCategoryPage = async (req, res, next) => {
       title: "Add Category Form",
       description: "Welcome to Add Category Form",
     };
-    res.render("admin/form/addCategoryForm", { locals, layout: adminLayout });
+    res.render("admin/form/addCategoryForm", { locals, layout: adminLayout,user:req.user });
   } catch (error) {
     console.log(`Add Category error : ${error}`);
     res.redirect("/error");

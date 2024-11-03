@@ -25,8 +25,3 @@ addEventOnElements(navTogglers, "click", toggleNavbar);
       }, false)
     })
 })()
-const userBtn=document.querySelector('.user-avatar');
-const customDropdown=document.querySelector('.custom-dropdown');
-userBtn.addEventListener('click',()=>{
-    customDropdown.classList.toggle('show')
-})

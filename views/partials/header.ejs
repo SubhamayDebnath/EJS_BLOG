@@ -25,9 +25,11 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/contact">Contact</a>
                     </li>
+                    <% if(!user){ %>
                     <li class="nav-item">
                         <a class="nav-link" href="/register">Join Us</a>
                     </li>
+                    <% } %>
                     <% if(user){ %>
                         <% if(user.role !== undefined) { %>
                             <li class="nav-item">
