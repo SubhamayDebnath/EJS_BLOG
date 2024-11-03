@@ -43,7 +43,7 @@ const contactPage = async (req, res, next) => {
       title: "Contact Page",
       description: "Welcome to our Contact page",
     };
-    res.render("contact", { locals,mememe });
+    res.render("contact", { locals });
   } catch (error) {
     console.log(`Contact page error : ${error}`);
     res.redirect("/error");
