@@ -12,7 +12,6 @@ const dashboard = async (req, res, next) => {
     res.render("utils/error", {
       locals: { title: "Error", description: "Welcome to our home page" },
       layout: utilsLayout,
-      message: error,
     });
   }
 };
@@ -28,7 +27,6 @@ const articlesPage = async (req, res, next) => {
     res.render("utils/error", {
       locals: { title: "Error", description: "Welcome to our home page" },
       layout: utilsLayout,
-      message: error,
     });
   }
 };
@@ -44,7 +42,6 @@ const categoriesPage = async (req, res, next) => {
     res.render("utils/error", {
       locals: { title: "Error", description: "Welcome to our home page" },
       layout: utilsLayout,
-      message: error,
     });
   }
 };
@@ -60,7 +57,6 @@ const usersPage = async (req, res, next) => {
     res.render("utils/error", {
       locals: { title: "Error", description: "Welcome to our home page" },
       layout: utilsLayout,
-      message: error,
     });
   }
 };
@@ -76,41 +72,46 @@ const contactPage = async (req, res, next) => {
     res.render("utils/error", {
       locals: { title: "Error", description: "Welcome to our home page" },
       layout: utilsLayout,
-      message: error,
     });
   }
 };
 
-const addPostPage=async (req,res,next) => {
-    try {
-        const locals = {
-          title: "Add Post Form",
-          description: "Welcome to Add Post Form",
-        };
-        res.render("admin/form/addPostForm", { locals, layout: adminLayout });
-      } catch (error) {
-        console.log(`Add Post error : ${error}`);
-        res.render("utils/error", {
-          locals: { title: "Error", description: "Welcome to our home page" },
-          layout: utilsLayout,
-          message: error,
-        });
-      }
-}
-const addCategoryPage=async (req,res,next) => {
-    try {
-        const locals = {
-          title: "Add Category Form",
-          description: "Welcome to Add Category Form",
-        };
-        res.render("admin/form/addCategoryForm", { locals, layout: adminLayout });
-      } catch (error) {
-        console.log(`Add Category error : ${error}`);
-        res.render("utils/error", {
-          locals: { title: "Error", description: "Welcome to our home page" },
-          layout: utilsLayout,
-          message: error,
-        });
-      }
-}
-export { dashboard, articlesPage, categoriesPage, usersPage, contactPage ,addPostPage,addCategoryPage};
+const addPostPage = async (req, res, next) => {
+  try {
+    const locals = {
+      title: "Add Post Form",
+      description: "Welcome to Add Post Form",
+    };
+    res.render("admin/form/addPostForm", { locals, layout: adminLayout });
+  } catch (error) {
+    console.log(`Add Post error : ${error}`);
+    res.render("utils/error", {
+      locals: { title: "Error", description: "Welcome to our home page" },
+      layout: utilsLayout,
+    });
+  }
+};
+const addCategoryPage = async (req, res, next) => {
+  try {
+    const locals = {
+      title: "Add Category Form",
+      description: "Welcome to Add Category Form",
+    };
+    res.render("admin/form/addCategoryForm", { locals, layout: adminLayout });
+  } catch (error) {
+    console.log(`Add Category error : ${error}`);
+    res.render("utils/error", {
+      locals: { title: "Error", description: "Welcome to our home page" },
+      layout: utilsLayout,
+    });
+  }
+};
+export {
+  dashboard,
+  articlesPage,
+  categoriesPage,
+  usersPage,
+  contactPage,
+  addPostPage,
+  addCategoryPage,
+};

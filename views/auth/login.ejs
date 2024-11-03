@@ -5,6 +5,11 @@
                 <h3 class="text-center">Welcome Back!</h3>
                 <p class="text-center">Please log in to continue.</p>
             </div>
+            <% if(typeof message !==  'undefined' || message !== undefined) { %>
+                <div class="alert alert-danger" role="alert">
+                    <%- message %>
+                </div>
+            <% } %>
             <form action="/api/v1/login" onsubmit="validatePassword()" method="post">
                 <div class="form-group mb-3">
                     <label for="email" class="form-label">Email</label>
