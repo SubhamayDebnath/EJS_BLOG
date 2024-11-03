@@ -5,32 +5,25 @@
                 <h3 class="text-center">Create Your Account</h3>
                 <p class="text-center">Join us and start your journey today!</p>
             </div>
-            <div class="alert alert-danger text-white" role="alert">
-                Invalid Password/Email
-              </div>
-            <form class="needs-validation" novalidate >
+            <form action="/api/v1/register" onsubmit="validatePassword()" method="post" novalidate>
                 <div class="form-group mb-3">
-                    <label for="validationCustom01" class="form-label">Username</label>
-                    <input type="text" name="username" class="form-control" id="validationCustom01" placeholder="Enter your username" required autocomplete="off">
-                    <div class="invalid-feedback">
-                        Please enter your username.
-                    </div>
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" name="username" class="form-control mb-1" id="username"
+                        placeholder="Enter your username" required autocomplete="off">
+                    <p class="username-error-message text-danger"></p>
                 </div>
                 <div class="form-group mb-3">
-                    <label for="validationCustom02" class="form-label">Email</label>
-                    <input type="email" name="email" class="form-control" id="validationCustom02" placeholder="Enter your email" required autocomplete="off">
-                    <div class="invalid-feedback">
-                        Please enter your email.
-                    </div>
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control mb-1" id="email" placeholder="Enter your email"
+                        required autocomplete="off">
                 </div>
                 <div class="form-group mb-4">
-                    <label for="validationCustom03" class="form-label">Password</label>
-                    <input type="password" name="password" class="form-control" id="validationCustom03" placeholder="Enter your password" required autocomplete="off">
-                    <div class="invalid-feedback">
-                        Please enter your password.
-                    </div>
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" name="password" class="form-control mb-1" id="password"
+                        placeholder="Enter your password" required autocomplete="off">
+                    <p class="password-error-message text-danger"></p>
                 </div>
-                <button class="btn btn-primary w-100" type="submit">Login</button>
+                <button class="btn btn-primary w-100" id="submit-button" type="submit">Login</button>
             </form>
             <div class="text-center mt-3">
                 <p>Have an account? <a href="/login" class="ms-1">Sign in now</a>!</p>
@@ -38,3 +31,28 @@
         </div>
     </div>
 </div>
+<script>
+    function validatePassword() {
+        const passwordInput = document.querySelector('#password');
+        const username = document.querySelector("#username");
+        const email = document.querySelector("#email")
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{6,25})/;
+        const password = passwordInput.value;
+        const usernameValue = username.value;
+        const emailValue = email.value;
+        if (usernameValue.length >= 3 || usernameValue.length <= 26) {
+            document.querySelector('.username-error-message').innerHTML = `Username Password must be at 6-25 characters long`;
+            username.classList.add('border-danger')
+            return false;
+        } else if (!passwordRegex.test(password)) {
+            document.querySelector('.password-error-message').innerHTML = `Password must be 6-25 characters long, contain at least one uppercase letter, one special character, and one number.`;
+            passwordInput.classList.add('border-danger')
+            return false;
+        } else if (!emailRegex.test(emailInput.value)) {
+            document.querySelector('.email-error-message').innerHTML = `Email must be a valid email address.`;
+            return false;
+        }
+        return true;
+    }
+</script>

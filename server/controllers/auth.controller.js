@@ -44,8 +44,21 @@ const loginPage=async (req,res,next) => {
         });
       }
 }
-
+const register=async (req,res,next) => {
+  try {
+    const { username, email, password } = req.body;
+    console.log(req.body);
+  } catch (error) {
+    console.log(`Login error : ${error}`);
+    res.render("utils/error", {
+      locals: { title: "Error", description: "Welcome to our home page" },
+      layout: utilsLayout,
+      message: error,
+    });
+  }
+}
 export{
     registerPage,
-    loginPage
+    loginPage,
+    register
 }
