@@ -1,0 +1,23 @@
+add post form
+<script src="/tinymce/tinymce.min.js"></script>
+<script src="/scripts/text-editor.js"></script>
+<script>
+    document.getElementById('avatar').addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const img = document.getElementById('previewImage');
+                img.src = e.target.result;
+                img.classList.remove('hidden');
+                document.getElementById('imageLabel').classList.add('hidden')
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+    function disableSubmitButton() {
+        const submitButton = document.getElementById("submit-button");
+        submitButton.disabled = true;
+        submitButton.textContent = "Submitting...";
+    }
+</script>

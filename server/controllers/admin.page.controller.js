@@ -80,4 +80,37 @@ const contactPage = async (req, res, next) => {
     });
   }
 };
-export { dashboard, articlesPage, categoriesPage, usersPage, contactPage };
+
+const addPostPage=async (req,res,next) => {
+    try {
+        const locals = {
+          title: "Add Post Form",
+          description: "Welcome to Add Post Form",
+        };
+        res.render("admin/form/addPostForm", { locals, layout: adminLayout });
+      } catch (error) {
+        console.log(`Add Post error : ${error}`);
+        res.render("utils/error", {
+          locals: { title: "Error", description: "Welcome to our home page" },
+          layout: utilsLayout,
+          message: error,
+        });
+      }
+}
+const addCategoryPage=async (req,res,next) => {
+    try {
+        const locals = {
+          title: "Add Category Form",
+          description: "Welcome to Add Category Form",
+        };
+        res.render("admin/form/addCategoryForm", { locals, layout: adminLayout });
+      } catch (error) {
+        console.log(`Add Category error : ${error}`);
+        res.render("utils/error", {
+          locals: { title: "Error", description: "Welcome to our home page" },
+          layout: utilsLayout,
+          message: error,
+        });
+      }
+}
+export { dashboard, articlesPage, categoriesPage, usersPage, contactPage ,addPostPage,addCategoryPage};
