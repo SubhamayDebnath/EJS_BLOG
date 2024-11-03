@@ -6,6 +6,7 @@ const dashboard = async (req, res, next) => {
       title: "Dashboard",
       description: "Welcome to Dashboard",
     };
+    
     res.render("admin/index", { locals, layout: adminLayout });
   } catch (error) {
     console.log(`Dashboard error : ${error}`);
