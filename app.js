@@ -12,6 +12,7 @@ config();
 import DBConnection from "./server/config/DBConnection.js";
 import mainPageRoutes from "./server/routes/main.page.routes.js";
 import adminPageRoutes from "./server/routes/admin.page.routes.js";
+import authRoutes from './server/routes/auth.routes.js'
 
 const app = express();
 const PORT = process.env.PORT;
@@ -40,6 +41,7 @@ app.use(flush());
 app.use(morgan("dev"));
 
 app.use("", mainPageRoutes);
+app.use("",authRoutes);
 app.use("/dashboard", adminPageRoutes);
 
 app.listen(PORT, async () => {

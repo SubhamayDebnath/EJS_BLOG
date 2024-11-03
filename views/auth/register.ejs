@@ -1,0 +1,40 @@
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-5 col-12 auth-container p-4 rounded border mx-auto">
+            <div class="mb-3">
+                <h3 class="text-center">Create Your Account</h3>
+                <p class="text-center">Join us and start your journey today!</p>
+            </div>
+            <div class="alert alert-danger text-white" role="alert">
+                Invalid Password/Email
+              </div>
+            <form class="needs-validation" novalidate >
+                <div class="form-group mb-3">
+                    <label for="validationCustom01" class="form-label">Username</label>
+                    <input type="text" name="username" class="form-control" id="validationCustom01" placeholder="Enter your username" required autocomplete="off">
+                    <div class="invalid-feedback">
+                        Please enter your username.
+                    </div>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="validationCustom02" class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control" id="validationCustom02" placeholder="Enter your email" required autocomplete="off">
+                    <div class="invalid-feedback">
+                        Please enter your email.
+                    </div>
+                </div>
+                <div class="form-group mb-4">
+                    <label for="validationCustom03" class="form-label">Password</label>
+                    <input type="password" name="password" class="form-control" id="validationCustom03" placeholder="Enter your password" required autocomplete="off">
+                    <div class="invalid-feedback">
+                        Please enter your password.
+                    </div>
+                </div>
+                <button class="btn btn-primary w-100" type="submit">Login</button>
+            </form>
+            <div class="text-center mt-3">
+                <p>Have an account? <a href="/login" class="ms-1">Sign in now</a>!</p>
+            </div>
+        </div>
+    </div>
+</div>
