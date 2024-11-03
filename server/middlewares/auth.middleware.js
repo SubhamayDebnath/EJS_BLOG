@@ -42,7 +42,7 @@ const isAuthorized = async (req, res, next) => {
       );
       return res.redirect("/login");
     }
-    req.user=currentUser
+    req.user = currentUser;
     next();
   } catch (error) {
     console.log(`JWT error : ${error}`);
@@ -50,4 +50,22 @@ const isAuthorized = async (req, res, next) => {
   }
 };
 
-export { isLoggedIn, isAuthorized };
+const isAuthenticated = async (req, res, next) => {
+  try {
+    const { token } = req.cookies;
+    if (!token) {
+      req.user = undefined;
+      next();
+    } else {
+      const decoded = jwt.verify(token, jwtSecret);
+      const currentUser = await User.findById(decoded.userId);
+      req.user = currentUser;
+      next();
+    }
+  } catch (error) {
+    console.log(`JWT error : ${error}`);
+    res.redirect("/error");
+  }
+};
+
+export { isLoggedIn, isAuthorized, isAuthenticated };
