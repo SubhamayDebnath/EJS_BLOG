@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { config } from "dotenv";
 config();
+import User from "../models/user.model.js";
 const jwtSecret = process.env.JWT_SECRET;
 const cookieOption = {
   maxAge: 24 * 60 * 60 * 1000,
@@ -24,10 +25,7 @@ const registerPage = async (req, res, next) => {
     });
   } catch (error) {
     console.log(`Register error : ${error}`);
-    res.render("utils/error", {
-      locals: { title: "Error", description: "Welcome to our home page" },
-      layout: utilsLayout,
-    });
+res.redirect("/error");
   }
 };
 
@@ -44,40 +42,34 @@ const loginPage = async (req, res, next) => {
     });
   } catch (error) {
     console.log(`Login error : ${error}`);
-    res.render("utils/error", {
-      locals: { title: "Error", description: "Welcome to our home page" },
-      layout: utilsLayout,
-    });
+res.redirect("/error");
   }
 };
 const register = async (req, res, next) => {
   try {
-    const locals = {
-      title: "Register Page",
+    // const locals = {
+    //   title: "Register Page",
 
-      description: "Welcome to Register Page",
-    };
+    //   description: "Welcome to Register Page",
+    // };
     const { username, email, password } = req.body;
     if (!username || !email || !password) {
-      res.render("auth/register", {
+      res.redirect("/register", {
         locals,
         layout: authenticationLayout,
         message: "Please fill in all fields",
       });
     }
-    if (username !== "weee") {
-      res.render("auth/register", {
-        locals,
-        layout: authenticationLayout,
-        message: "working",
-      });
-    }
+    res.redirect("/register", {
+      locals,
+      layout: authenticationLayout,
+      message: "Please fill in all fields",
+    });
+    const existingUser = await User.findOne({ email });
+    console.log(existingUser);
   } catch (error) {
     console.log(`Login error : ${error}`);
-    res.render("utils/error", {
-      locals: { title: "Error", description: "Welcome to our home page" },
-      layout: utilsLayout,
-    });
+    res.redirect("/error");
   }
 };
 export { registerPage, loginPage, register };

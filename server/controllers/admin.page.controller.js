@@ -9,10 +9,7 @@ const dashboard = async (req, res, next) => {
     res.render("admin/index", { locals, layout: adminLayout });
   } catch (error) {
     console.log(`Dashboard error : ${error}`);
-    res.render("utils/error", {
-      locals: { title: "Error", description: "Welcome to our home page" },
-      layout: utilsLayout,
-    });
+    res.redirect("/error");
   }
 };
 const articlesPage = async (req, res, next) => {
@@ -24,10 +21,7 @@ const articlesPage = async (req, res, next) => {
     res.render("admin/articles", { locals, layout: adminLayout });
   } catch (error) {
     console.log(`Dashboard error : ${error}`);
-    res.render("utils/error", {
-      locals: { title: "Error", description: "Welcome to our home page" },
-      layout: utilsLayout,
-    });
+    res.redirect("/error");
   }
 };
 const categoriesPage = async (req, res, next) => {
@@ -39,10 +33,7 @@ const categoriesPage = async (req, res, next) => {
     res.render("admin/categories", { locals, layout: adminLayout });
   } catch (error) {
     console.log(`Categories error : ${error}`);
-    res.render("utils/error", {
-      locals: { title: "Error", description: "Welcome to our home page" },
-      layout: utilsLayout,
-    });
+    res.redirect("/error");
   }
 };
 const usersPage = async (req, res, next) => {
@@ -54,10 +45,7 @@ const usersPage = async (req, res, next) => {
     res.render("admin/users", { locals, layout: adminLayout });
   } catch (error) {
     console.log(`Users error : ${error}`);
-    res.render("utils/error", {
-      locals: { title: "Error", description: "Welcome to our home page" },
-      layout: utilsLayout,
-    });
+    res.redirect("/error");
   }
 };
 const contactPage = async (req, res, next) => {
@@ -69,10 +57,7 @@ const contactPage = async (req, res, next) => {
     res.render("admin/contact", { locals, layout: adminLayout });
   } catch (error) {
     console.log(`Contact Form error : ${error}`);
-    res.render("utils/error", {
-      locals: { title: "Error", description: "Welcome to our home page" },
-      layout: utilsLayout,
-    });
+    res.redirect("/error");
   }
 };
 
@@ -85,10 +70,7 @@ const addPostPage = async (req, res, next) => {
     res.render("admin/form/addPostForm", { locals, layout: adminLayout });
   } catch (error) {
     console.log(`Add Post error : ${error}`);
-    res.render("utils/error", {
-      locals: { title: "Error", description: "Welcome to our home page" },
-      layout: utilsLayout,
-    });
+    res.redirect("/error");
   }
 };
 const addCategoryPage = async (req, res, next) => {
@@ -100,10 +82,7 @@ const addCategoryPage = async (req, res, next) => {
     res.render("admin/form/addCategoryForm", { locals, layout: adminLayout });
   } catch (error) {
     console.log(`Add Category error : ${error}`);
-    res.render("utils/error", {
-      locals: { title: "Error", description: "Welcome to our home page" },
-      layout: utilsLayout,
-    });
+    res.redirect("/error");
   }
 };
 export {

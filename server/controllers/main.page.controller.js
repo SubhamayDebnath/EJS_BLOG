@@ -8,10 +8,7 @@ const homePage = async (req, res, next) => {
     res.render("index", { locals });
   } catch (error) {
     console.log(`Home page error : ${error}`);
-    res.render("utils/error", {
-      locals: { title: "Error", description: "Welcome to our home page" },
-      layout: utilsLayout,
-    });
+    res.redirect("/error");
   }
 };
 const articlesPage = async (req, res, next) => {
@@ -23,10 +20,7 @@ const articlesPage = async (req, res, next) => {
     res.render("articles", { locals });
   } catch (error) {
     console.log(`Articles page error : ${error}`);
-    res.render("utils/error", {
-      locals: { title: "Error", description: "Welcome to our home page" },
-      layout: utilsLayout,
-    });
+    res.redirect("/error");
   }
 };
 
@@ -39,10 +33,7 @@ const categoriesPage = async (req, res, next) => {
     res.render("categories", { locals });
   } catch (error) {
     console.log(`Categories page error : ${error}`);
-    res.render("utils/error", {
-      locals: { title: "Error", description: "Welcome to our home page" },
-      layout: utilsLayout,
-    });
+    res.redirect("/error");
   }
 };
 
@@ -52,14 +43,18 @@ const contactPage = async (req, res, next) => {
       title: "Contact Page",
       description: "Welcome to our Contact page",
     };
-    res.render("contact", { locals });
+    res.render("contact", { locals,mememe });
   } catch (error) {
     console.log(`Contact page error : ${error}`);
-    res.render("utils/error", {
-      locals: { title: "Error", description: "Welcome to our home page" },
-      layout: utilsLayout,
-    });
+    res.redirect("/error");
   }
 };
 
-export { homePage, articlesPage, contactPage, categoriesPage };
+const errorPage=async (req,res,next) => {
+  res.render("utils/error", {
+    locals: { title: "Error", description: "Welcome to our home page" },
+    layout: utilsLayout,
+  });
+}
+
+export { homePage, articlesPage, contactPage, categoriesPage,errorPage };
