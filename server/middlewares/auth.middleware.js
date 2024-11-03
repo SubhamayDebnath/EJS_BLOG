@@ -42,6 +42,7 @@ const isAuthorized = async (req, res, next) => {
       );
       return res.redirect("/login");
     }
+    req.user=currentUser
     next();
   } catch (error) {
     console.log(`JWT error : ${error}`);

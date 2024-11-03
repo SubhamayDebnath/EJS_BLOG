@@ -1,3 +1,8 @@
+import User from "../models/user.model.js";
+import jwt from "jsonwebtoken";
+import { config } from "dotenv";
+config();
+const jwtSecret = process.env.JWT_SECRET;
 const utilsLayout = "../views/layouts/utils";
 const homePage = async (req, res, next) => {
   try {
@@ -5,7 +10,7 @@ const homePage = async (req, res, next) => {
       title: "Home Page",
       description: "Welcome to our home page",
     };
-    res.render("index", { locals });
+    res.render("index", { locals});
   } catch (error) {
     console.log(`Home page error : ${error}`);
     res.redirect("/error");

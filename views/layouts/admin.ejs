@@ -29,9 +29,10 @@
             </a>
             <div class="position-relative">
                 <button class="user-avatar rounded-pill overflow-hidden" title="user">
-                    <img src="/images/author.jpg" alt="" class="w-100 h-100 object-fit-contain ">
+                    <img src="<%-user.avatar.secure_url %>" alt="<%- user.username  %>" class="w-100 h-100 object-fit-contain ">
                 </button>
                 <div class="position-fixed custom-dropdown p-2 rounded bg-dark border">
+                    <span class="custom-dropdown-link rounded"><%- user.username  %></span>
                     <a href="" class="custom-dropdown-link rounded">Profile</a>
                     <a href="" class="custom-dropdown-link rounded">Logout</a>
                 </div>
