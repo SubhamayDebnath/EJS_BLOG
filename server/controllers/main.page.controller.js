@@ -57,4 +57,5 @@ const errorPage=async (req,res,next) => {
   });
 }
 
-export { homePage, articlesPage, contactPage, categoriesPage,errorPage };
+
+export { homePage, articlesPage, contactPage, categoriesPage,errorPage};

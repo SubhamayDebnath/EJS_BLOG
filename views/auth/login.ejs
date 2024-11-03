@@ -5,28 +5,28 @@
                 <h3 class="text-center">Welcome Back!</h3>
                 <p class="text-center">Please log in to continue.</p>
             </div>
-            <% if(typeof message !==  'undefined' || message !== undefined) { %>
-                <div class="alert alert-danger" role="alert">
-                    <%- message %>
+            <% if (error_msg.length> 0) { %>
+                <div class="alert alert-danger">
+                    <%= error_msg %>
                 </div>
-            <% } %>
-            <form action="/api/v1/login" onsubmit="validatePassword()" method="post">
-                <div class="form-group mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" name="email" class="form-control mb-1" id="email" placeholder="Enter your email"
-                        required autocomplete="off">
-                </div>
-                <div class="form-group mb-4">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" name="password" class="form-control mb-1" id="password"
-                        placeholder="Enter your password" required autocomplete="off">
-                    <p class="password-error-message text-danger"></p>
-                </div>
-                <button class="btn btn-primary w-100" id="submit-button" type="submit">Login</button>
-            </form>
-            <div class="text-center mt-3">
-                <p>New to our platform? <a href="/register" class="ms-1">Sign up now</a>!</p>
-            </div>
+                <% } %>
+                    <form action="/api/v1/login" onsubmit="validatePassword()" method="post">
+                        <div class="form-group mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" name="email" class="form-control mb-1" id="email"
+                                placeholder="Enter your email" required autocomplete="off">
+                        </div>
+                        <div class="form-group mb-4">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" name="password" class="form-control mb-1" id="password"
+                                placeholder="Enter your password" required autocomplete="off">
+                            <p class="password-error-message text-danger"></p>
+                        </div>
+                        <button class="btn btn-primary w-100" id="submit-button" type="submit">Login</button>
+                    </form>
+                    <div class="text-center mt-3">
+                        <p>New to our platform? <a href="/register" class="ms-1">Sign up now</a>!</p>
+                    </div>
         </div>
     </div>
 </div>

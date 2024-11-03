@@ -5,34 +5,34 @@
                 <h3 class="text-center">Create Your Account</h3>
                 <p class="text-center">Join us and start your journey today!</p>
             </div>
-            <% if(typeof message !==  'undefined' || message !== undefined) { %>
-                <div class="alert alert-danger" role="alert">
-                    <%- message %>
+            <% if (error_msg.length> 0) { %>
+                <div class="alert alert-danger">
+                    <%= error_msg %>
                 </div>
-            <% } %>
-            <form action="/api/v1/register" onsubmit="validatePassword()" method="post">
-                <div class="form-group mb-3">
-                    <label for="username" class="form-label">Username</label>
-                    <input type="text" name="username" class="form-control mb-1" id="username"
-                        placeholder="Enter your username" required autocomplete="off">
-                    <p class="username-error-message text-danger"></p>
-                </div>
-                <div class="form-group mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" name="email" class="form-control mb-1" id="email" placeholder="Enter your email"
-                        required autocomplete="off">
-                </div>
-                <div class="form-group mb-4">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" name="password" class="form-control mb-1" id="password"
-                        placeholder="Enter your password" required autocomplete="off">
-                    <p class="password-error-message text-danger"></p>
-                </div>
-                <button class="btn btn-primary w-100" id="submit-button" type="submit">Login</button>
-            </form>
-            <div class="text-center mt-3">
-                <p>Have an account? <a href="/login" class="ms-1">Sign in now</a>!</p>
-            </div>
+                <% } %>
+                    <form action="/api/v1/register" onsubmit="validatePassword()" method="post">
+                        <div class="form-group mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" name="username" class="form-control mb-1" id="username"
+                                placeholder="Enter your username" required autocomplete="off">
+                            <p class="username-error-message text-danger"></p>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" name="email" class="form-control mb-1" id="email"
+                                placeholder="Enter your email" required autocomplete="off">
+                        </div>
+                        <div class="form-group mb-4">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" name="password" class="form-control mb-1" id="password"
+                                placeholder="Enter your password" required autocomplete="off">
+                            <p class="password-error-message text-danger"></p>
+                        </div>
+                        <button class="btn btn-primary w-100" id="submit-button" type="submit">Login</button>
+                    </form>
+                    <div class="text-center mt-3">
+                        <p>Have an account? <a href="/login" class="ms-1">Sign in now</a>!</p>
+                    </div>
         </div>
     </div>
 </div>
@@ -46,8 +46,8 @@
         const password = passwordInput.value;
         const usernameValue = username.value;
         const emailValue = email.value;
-        if (usernameValue.length >= 3 || usernameValue.length <= 26) {
-            document.querySelector('.username-error-message').innerHTML = `Username Password must be at 6-25 characters long`;
+        if (usernameValue.length <= 3 && usernameValue.length >= 26) {
+            document.querySelector('.username-error-message').innerHTML = `Username must be at 6-25 characters long`;
             username.classList.add('border-danger')
             return false;
         } else if (!passwordRegex.test(password)) {
