@@ -11,6 +11,7 @@ config();
 
 import DBConnection from "./server/config/DBConnection.js";
 import mainPageRoutes from "./server/routes/main.page.routes.js";
+import adminPageRoutes from "./server/routes/admin.page.routes.js";
 
 const app = express();
 const PORT = process.env.PORT;
@@ -35,13 +36,13 @@ app.use(expressLayout);
 app.set("layout", "./layouts/main");
 app.set("view engine", "ejs");
 
-
 app.use(flush());
 app.use(morgan("dev"));
 
-app.use("",mainPageRoutes);
+app.use("", mainPageRoutes);
+app.use("/dashboard", adminPageRoutes);
 
 app.listen(PORT, async () => {
-    DBConnection();
-    console.log(`server is running on port http://localhost:${PORT}`);
+  DBConnection();
+  console.log(`server is running on port http://localhost:${PORT}`);
 });
