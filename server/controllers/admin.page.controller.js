@@ -12,7 +12,7 @@ const dashboard=async (req,res,next) => {
         res.render('utils/error',{ locals:{title: "Error",description: "Welcome to our home page"}, layout: utilsLayout,message:error })
     }
 }
-const articlePage=async (req,res,next) => {
+const articlesPage=async (req,res,next) => {
     try {
         const locals = {
             title: "Article",
@@ -24,7 +24,21 @@ const articlePage=async (req,res,next) => {
         res.render('utils/error',{ locals:{title: "Error",description: "Welcome to our home page"}, layout: utilsLayout,message:error })
     }
 }
+const categoriesPage=async (req,res,next) => {
+    try {
+        const locals = {
+            title: "Categories",
+            description: "Welcome to Categories",
+        };
+        res.render('admin/categories',{ locals,layout: adminLayout,})
+    } catch (error) {
+        console.log(`Categories error : ${error}`);
+        res.render('utils/error',{ locals:{title: "Error",description: "Welcome to our home page"}, layout: utilsLayout,message:error })
+    }
+}
+
 export{
     dashboard,
-    articlePage
+    articlesPage,
+    categoriesPage
 }

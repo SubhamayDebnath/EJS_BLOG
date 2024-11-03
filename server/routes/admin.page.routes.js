@@ -1,6 +1,11 @@
 import express from "express";
-import{dashboard,articlePage} from '../controllers/admin.page.controller.js'
+import {
+  dashboard,
+  articlesPage,
+  categoriesPage,
+} from "../controllers/admin.page.controller.js";
 const router = express.Router();
 router.get("/", dashboard);
-router.get('/articles',articlePage)
+router.get("/articles", articlesPage);
+router.get("/categories", categoriesPage);
 export default router;
