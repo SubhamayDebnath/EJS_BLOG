@@ -5,23 +5,17 @@
                 <h3 class="text-center">Welcome Back!</h3>
                 <p class="text-center">Please log in to continue.</p>
             </div>
-            <div class="alert alert-danger text-white" role="alert">
-                Invalid Password/Email
-              </div>
-            <form class="needs-validation" novalidate >
+            <form action="/api/v1/login" onsubmit="validatePassword()" method="post">
                 <div class="form-group mb-3">
-                    <label for="validationCustom01" class="form-label">Email</label>
-                    <input type="email" name="email" class="form-control" id="validationCustom01" placeholder="Enter your email" required autocomplete="off">
-                    <div class="invalid-feedback">
-                        Please enter your email.
-                    </div>
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control mb-1" id="email" placeholder="Enter your email"
+                        required autocomplete="off">
                 </div>
                 <div class="form-group mb-4">
-                    <label for="validationCustom02" class="form-label">Password</label>
-                    <input type="password" name="password" class="form-control" id="validationCustom02" placeholder="Enter your password" required autocomplete="off">
-                    <div class="invalid-feedback">
-                        Please enter your password.
-                    </div>
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" name="password" class="form-control mb-1" id="password"
+                        placeholder="Enter your password" required autocomplete="off">
+                    <p class="password-error-message text-danger"></p>
                 </div>
                 <button class="btn btn-primary w-100" id="submit-button" type="submit">Login</button>
             </form>
@@ -31,3 +25,22 @@
         </div>
     </div>
 </div>
+<script>
+    function validatePassword() {
+        const passwordInput = document.querySelector('#password');
+        const email = document.querySelector("#email")
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{6,25})/;
+        const password = passwordInput.value;
+        const emailValue = email.value;
+        if (!passwordRegex.test(password)) {
+            document.querySelector('.password-error-message').innerHTML = `Password must be 6-25 characters long, contain at least one uppercase letter, one special character, and one number.`;
+            passwordInput.classList.add('border-danger')
+            return false;
+        } else if (!emailRegex.test(emailInput.value)) {
+            document.querySelector('.email-error-message').innerHTML = `Email must be a valid email address.`;
+            return false;
+        }
+        return true;
+    }
+</script>
