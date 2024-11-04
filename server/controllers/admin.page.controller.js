@@ -1,5 +1,6 @@
 import User from '../models/user.model.js'
 import Category from '../models/category.model.js';
+import Post from '../models/post.model.js'
 const adminLayout = "../views/layouts/admin";
 const dashboard = async (req, res, next) => {
   try {
@@ -9,7 +10,8 @@ const dashboard = async (req, res, next) => {
     };
     const numberOfUsers = await User.countDocuments();
     const numberOfCategories = await Category.countDocuments();
-    res.render("admin/index", { locals, layout: adminLayout ,user:req.user, numberOfUsers,numberOfCategories });
+    const numberOfPosts = await Post.countDocuments();
+    res.render("admin/index", { locals, layout: adminLayout ,user:req.user, numberOfUsers,numberOfCategories ,numberOfPosts});
   } catch (error) {
     console.log(`Dashboard error : ${error}`);
     res.redirect("/error");
@@ -21,7 +23,11 @@ const articlesPage = async (req, res, next) => {
       title: "Article",
       description: "Welcome to Article",
     };
-    res.render("admin/articles", { locals, layout: adminLayout,user:req.user });
+    const posts = await Post.find()
+    .populate('category', 'name') 
+    .populate('author', 'username') 
+    .sort({ createdAt: 1 });
+    res.render("admin/articles", { locals, layout: adminLayout,user:req.user,posts });
   } catch (error) {
     console.log(`Dashboard error : ${error}`);
     res.redirect("/error");
