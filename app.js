@@ -13,6 +13,7 @@ import DBConnection from "./server/config/DBConnection.js";
 import mainPageRoutes from "./server/routes/main.page.routes.js";
 import adminPageRoutes from "./server/routes/admin.page.routes.js";
 import authRoutes from "./server/routes/auth.routes.js";
+import adminMethodRoutes from "./server/routes/admin.routes.js";
 
 const app = express();
 const PORT = process.env.PORT;
@@ -47,6 +48,7 @@ app.use((req, res, next) => {
 
 app.use("", mainPageRoutes);
 app.use("", authRoutes);
+app.use("/api/v1", adminMethodRoutes);
 app.use("/dashboard", adminPageRoutes);
 
 app.use("*", (req, res) => {

@@ -38,6 +38,15 @@ body {
     line-height: 1.4;
     background-color: #141414;
 }
+.custom-alert-success,
+.custom-alert-error{
+  font-size: 14px;
+  padding: 10px;
+}
+.custom-alert-error{
+  background-color: #160b0b;
+  color: #f4c7c7;
+}
 .main-container{
     min-height: 100dvh;
     height: 100%;

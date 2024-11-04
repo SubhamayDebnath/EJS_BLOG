@@ -1,5 +1,5 @@
 import User from '../models/user.model.js'
-const utilsLayout = "../views/layouts/utils";
+import Category from '../models/category.model.js';
 const adminLayout = "../views/layouts/admin";
 const dashboard = async (req, res, next) => {
   try {
@@ -8,7 +8,8 @@ const dashboard = async (req, res, next) => {
       description: "Welcome to Dashboard",
     };
     const numberOfUsers = await User.countDocuments();
-    res.render("admin/index", { locals, layout: adminLayout ,user:req.user, numberOfUsers });
+    const numberOfCategories = await Category.countDocuments();
+    res.render("admin/index", { locals, layout: adminLayout ,user:req.user, numberOfUsers,numberOfCategories });
   } catch (error) {
     console.log(`Dashboard error : ${error}`);
     res.redirect("/error");
@@ -32,7 +33,8 @@ const categoriesPage = async (req, res, next) => {
       title: "Categories",
       description: "Welcome to Categories",
     };
-    res.render("admin/categories", { locals, layout: adminLayout,user:req.user });
+    const categories = await Category.find().sort({ createdAt: 1 });
+    res.render("admin/categories", { locals, layout: adminLayout,user:req.user,categories });
   } catch (error) {
     console.log(`Categories error : ${error}`);
     res.redirect("/error");

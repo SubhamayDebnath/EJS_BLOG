@@ -46,7 +46,19 @@ a {
   text-decoration: none;
   color: inherit;
 }
-
+.custom-alert-success,
+.custom-alert-error{
+  font-size: 14px;
+  padding: 10px;
+}
+.custom-alert-error{
+  background-color: #160b0b;
+  color: #f4c7c7;
+}
+.custom-alert-success{
+  background-color: #0c130d;
+  color: #cce8cd;
+}
 body {
   font-style: normal;
   font-weight: 400;
