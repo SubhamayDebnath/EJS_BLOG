@@ -1,4 +1,6 @@
 import User from "../models/user.model.js";
+import Post from "../models/post.model.js";
+import Category from "../models/category.model.js"
 import jwt from "jsonwebtoken";
 import { config } from "dotenv";
 config();
@@ -9,7 +11,9 @@ const homePage = async (req, res, next) => {
       title: "Home Page",
       description: "Welcome to our home page",
     };
-    res.render("index", { locals,user:req.user });
+    const categories = await Category.find();
+    const latestPosts = await Post.find({ status: true }).sort({ createdAt: -1 }).limit(5).populate('category', 'name');
+    res.render("index", { locals,user:req.user,categories,latestPosts });
   } catch (error) {
     console.log(`Home page error : ${error}`);
     res.redirect("/error");
