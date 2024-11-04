@@ -1,4 +1,11 @@
+import jwt from "jsonwebtoken";
+import { config } from "dotenv";
+import fs from "fs/promises";
+import cloudinary from "../utils/cloudinary.js";
+config();
 import Category from "../models/category.model.js";
+import Post from "../models/post.model.js";
+const jwtSecret = process.env.JWT_SECRET;
 const addCategory = async (req, res, next) => {
   try {
     const { name } = req.body;
@@ -70,12 +77,60 @@ const updateCategory = async (req, res, next) => {
   }
 };
 
-const addPost=async (req,res,next) => {
-    try {
-        console.log(req.body);
-    } catch (error) {
-        console.log(`Add Post error : ${error}`);
-        res.redirect("/error");
+const addPost = async (req, res, next) => {
+  try {
+    const { title, postBody, tags, category, status } = req.body;
+    if (!title || !postBody || !tags || !category || !status) {
+      req.flash("error_msg", "All fields are required");
+      return res.redirect("/dashboard/articles/add");
     }
-}
-export { addCategory, deleteCategory, updateCategory,addPost };
+    const decoded = jwt.verify(req.cookies.token, jwtSecret);
+    let image = "";
+    let public_id = "";
+    if (!req.file) {
+      req.flash("error_msg", "Please upload an image.");
+      return res.redirect("/dashboard/articles/add");
+    }
+    if (req.file) {
+      const transformationOptions = {
+        transformation: [
+          {
+            quality: "auto:low",
+            fetch_format: "avif",
+          },
+        ],
+      };
+
+      const cloudinaryResult = await cloudinary.uploader.upload(
+        req.file.path,
+        transformationOptions
+      );
+      image = cloudinaryResult.secure_url;
+      public_id = cloudinaryResult.public_id;
+      fs.rm(req.file.path);
+    }
+    const post = await Post.create({
+      image: {
+        public_id: public_id,
+        secure_url: image,
+      },
+      title: title,
+      content: postBody,
+      category: category,
+      tags: tags.split(","),
+      status: status === "true",
+      author: decoded.userId,
+    });
+    if (!post) {
+      req.flash("error_msg", "Failed to create post");
+      return res.redirect("/dashboard/articles/add");
+    }
+    await post.save();
+    req.flash("success_msg", "Post created successfully");
+    return res.redirect("/dashboard/articles/add");
+  } catch (error) {
+    console.log(`Add Post error : ${error}`);
+    res.redirect("/error");
+  }
+};
+export { addCategory, deleteCategory, updateCategory, addPost };
