@@ -1,1 +1,120 @@
-users
+<div class="container px-0">
+  <div class="row">
+    <div class="col-md-12 mb-3">
+      <div class="card">
+        <div class="card-header">
+          <div class="d-flex align-items-center justify-content-between ">
+            <h5 class="mb-0"><span><span><i class="bi bi-table me-2"></i></span>Categories</h5>
+            <a href="/dashboard/category/add" class="btn btn-primary btn-sm">Add Category</a>
+          </div>
+          <% if (error_msg.length> 0) { %>
+          <div class="custom-alert-error alert alert-dismissible  rounded mt-2" role="alert">
+            <%= error_msg %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+          <% } %>
+          <% if (success_msg.length> 0) { %>
+          <div class="custom-alert-success alert alert-dismissible rounded mt-3" role="alert">
+            <%= success_msg %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+          <% } %>
+
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table id="example" class="table table-striped ">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Avatar</th>
+                  <th>Username</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Status</th>
+                  <th>Created at</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% if(users.length) {%>
+                <% users.forEach((data, index)=> { %>
+                <tr>
+                  <td><%- index + 1 %></td>
+                  <td>
+                    <div class="user-list-image-container rounded-circle">
+                      <img src="<%-data.avatar.secure_url%>" alt="<%-data.username  %>" class="w-100 h-100 object-fit-contain">
+                    </div>
+                  </td>
+                  <td class="text-capitalize"><%- data.username %></td>
+                  <td><%- data.email%></td>
+                  <td>
+                    <form action="">
+                      <select name="role" id="role" class="form-control form-control-sm">
+                        <option value="SUPERUSER" <%  if(data.role == 'SUPERUSER'){ %> selected <% } %>>SUPERUSER</option>
+                        <option value="ADMIN" <%  if(data.role == 'ADMIN'){ %> selected <% } %>>ADMIN</option>
+                        <option value="USER" <%  if(data.role == 'USER'){ %> selected <% } %>>USER</option>
+                      </select>
+                    </form>
+                  </td>
+                  <td>
+                    <form action="">
+                      <select name="status" id="status" class="form-control form-control-sm">
+                        <option value="ACTIVE" <%  if(data.status == 'ACTIVE'){ %> selected <% } %>>ACTIVE</option>
+                        <option value="INACTIVE" <%  if(data.status == 'INACTIVE'){ %> selected <% } %>>INACTIVE</option>
+                      </select>
+                    </form>
+                  </td>
+                  <td>
+                    <%= new Date(data.createdAt).toLocaleDateString() %>
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center gap-2">
+                      <% if(data.name !=='uncategorized' ){ %>
+                      <a href="category/update/<%- data._id %>" class="btn btn-primary btn-sm d-flex align-items-center gap-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2">
+                          <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+                          </path>
+                        </svg>
+                        Edit
+                      </a>
+                      <form action="/api/v1/category/delete/<%-data._id %>?_method=DELETE" method="post" onsubmit="confirmDelete()">
+                        <button type="submit" class="btn btn-danger btn-sm d-flex align-items-center gap-1">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2v2">
+                            </path>
+                          </svg>
+                          Delete
+                        </button>
+                      </form>
+                      <% }else{ %>
+                      <p>Default</p>
+                      <% } %>
+                    </div>
+                  </td>
+                </tr>
+                <% }) %>
+                <% }else{ %>
+                <td colspan="8" class="text-center text-white h5">No Category Found!</td>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="d-flex align-items-center justify-content-between card-footer gap-3">
+          <a href="" class="btn tag border">Previous</a>
+          <p> On page 1 of 69.</p>
+          <a href="" class="btn tag border">Next</a>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</div>
+<script>
+  function confirmDelete() {
+    return confirm("Are you sure you want to delete this item?");
+  }
+</script>

@@ -53,8 +53,8 @@ const usersPage = async (req, res, next) => {
       title: "Users",
       description: "Welcome to Users",
     };
-
-    res.render("admin/users", { locals, layout: adminLayout,user:req.user });
+    const users = await User.find();
+    res.render("admin/users", { locals, layout: adminLayout,user:req.user,users });
   } catch (error) {
     console.log(`Users error : ${error}`);
     res.redirect("/error");

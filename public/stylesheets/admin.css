@@ -198,6 +198,11 @@ main {
   justify-content: center;
   overflow: hidden;
 }
+.user-list-image-container{
+  height: 50px;
+  width: 50px;
+  overflow: hidden;
+}
 @media (max-width:768px) {
   .user-image-container{
     width: 75%;
