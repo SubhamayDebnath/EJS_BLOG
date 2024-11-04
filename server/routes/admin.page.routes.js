@@ -9,7 +9,8 @@ import {
   postByUserPage,
   addPostPage,
   addCategoryPage,
-  updateCategoryPage
+  updateCategoryPage,
+  updateUser
 } from "../controllers/admin.page.controller.js";
 import {isAuthorized} from '../middlewares/auth.middleware.js'
 const router = express.Router();
@@ -23,4 +24,5 @@ router.get("/me/article",isAuthorized,postByUserPage)
 router.get("/articles/add",isAuthorized,addPostPage)
 router.get("/category/add",isAuthorized,addCategoryPage)
 router.get("/category/update/:id",isAuthorized,updateCategoryPage)
+router.get("/me/update/:id",isAuthorized,updateUser)
 export default router;

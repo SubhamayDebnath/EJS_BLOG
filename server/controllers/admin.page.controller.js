@@ -150,6 +150,25 @@ const updateCategoryPage = async (req,res,next) => {
     res.redirect("/error");
   }
 }
+const updateUser=async (req,res,next) => {
+  try {
+    const locals = {
+      title: "Update User Form",
+      description: "Welcome to Update User Form",
+    };
+    const userId= req.params.id;
+    const user=await  User.findById(userId);
+    if(!user){
+      req.flash("error_msg", "Invalid user ID");
+      res.redirect('/dashboard/me')  
+    }
+    res.render("admin/form/updateProfileForm", { locals, layout: adminLayout,user:req.user,user});
+
+  } catch (error) {
+    console.log(`Update User error : ${error}`);
+    res.redirect("/error");
+  }
+}
 export {
   dashboard,
   articlesPage,
@@ -160,5 +179,6 @@ export {
   postByUserPage,
   addPostPage,
   addCategoryPage,
-  updateCategoryPage
+  updateCategoryPage,
+  updateUser
 };

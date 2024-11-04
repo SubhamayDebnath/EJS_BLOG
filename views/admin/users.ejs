@@ -4,8 +4,7 @@
       <div class="card">
         <div class="card-header">
           <div class="d-flex align-items-center justify-content-between ">
-            <h5 class="mb-0"><span><span><i class="bi bi-table me-2"></i></span>Categories</h5>
-            <a href="/dashboard/category/add" class="btn btn-primary btn-sm">Add Category</a>
+            <h5 class="mb-0"><span><span><i class="bi bi-table me-2"></i></span>Users</h5>
           </div>
           <% if (error_msg.length> 0) { %>
           <div class="custom-alert-error alert alert-dismissible  rounded mt-2" role="alert">
@@ -74,15 +73,7 @@
                   </td>
                   <td>
                     <div class="d-flex align-items-center gap-2">
-                      <% if(data.name !=='uncategorized' ){ %>
-                      <a href="category/update/<%- data._id %>" class="btn btn-primary btn-sm d-flex align-items-center gap-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2">
-                          <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
-                          </path>
-                        </svg>
-                        Edit
-                      </a>
-                      <form action="/api/v1/category/delete/<%-data._id %>?_method=DELETE" method="post" onsubmit="confirmDelete()">
+                      <form action="/api/v1/user/delete/<%-data._id %>?_method=DELETE" method="post" onsubmit="confirmDelete()">
                         <button type="submit" class="btn btn-danger btn-sm d-flex align-items-center gap-1">
                           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash">
                             <polyline points="3 6 5 6 21 6"></polyline>
@@ -92,9 +83,6 @@
                           Delete
                         </button>
                       </form>
-                      <% }else{ %>
-                      <p>Default</p>
-                      <% } %>
                     </div>
                   </td>
                 </tr>
