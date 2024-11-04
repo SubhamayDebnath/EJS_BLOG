@@ -25,7 +25,28 @@ const articlesPage = async (req, res, next) => {
       title: "articles Page",
       description: "Welcome to our articles page",
     };
-    res.render("articles", { locals,user:req.user  });
+    let perPage = 6;
+    let page = req.query.page || 1;
+    const posts = await Post.find({status: true })
+      .populate("category", "name")
+      .sort({ createdAt: -1 })
+      .skip(perPage * page - perPage)
+      .limit(perPage)
+      .exec();
+    const count = await Post.countDocuments({});
+    const totalPages = Math.ceil(count / perPage);
+    const nextPage = parseInt(page) + 1;
+    const hasNextPage = nextPage <= Math.ceil(count / perPage);
+    const prevPage = page > 1 ? page - 1 : null;
+    res.render("articles", { 
+      locals,
+      user:req.user ,
+      posts,
+      current: page,
+      nextPage: hasNextPage ? nextPage : null,
+      prevPage,
+      totalPages,
+     });
   } catch (error) {
     console.log(`Articles page error : ${error}`);
     res.redirect("/error");
@@ -38,7 +59,8 @@ const categoriesPage = async (req, res, next) => {
       title: "Categories Page",
       description: "Welcome to our Categories page",
     };
-    res.render("categories", { locals,user:req.user  });
+    const categories = await Category.find();
+    res.render("categories", { locals,user:req.user,categories});
   } catch (error) {
     console.log(`Categories page error : ${error}`);
     res.redirect("/error");
