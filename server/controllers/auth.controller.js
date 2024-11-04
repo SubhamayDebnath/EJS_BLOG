@@ -1,6 +1,8 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { config } from "dotenv";
+import fs from "fs/promises";
+import cloudinary from "../utils/cloudinary.js";
 config();
 import User from "../models/user.model.js";
 const jwtSecret = process.env.JWT_SECRET;
@@ -38,6 +40,7 @@ const loginPage = async (req, res, next) => {
 const register = async (req, res, next) => {
   try {
     const { username, email, password } = req.body;
+    console.log(req.body);
     if (!username || !email || !password) {
       req.flash("error_msg", "Please fill in all fields");
       return res.redirect("/register");
@@ -48,14 +51,37 @@ const register = async (req, res, next) => {
       return res.redirect("/register");
     }
     const hashPassword = await bcrypt.hash(password, 10);
+    let image = "";
+    let public_id = "";
+    if (!req.file) {
+      req.flash("error_msg", "Please upload an image.");
+      return res.redirect("/register");
+    }
+    if (req.file) {
+      const transformationOptions = {
+        transformation: [
+          {
+            quality: "auto:low",
+            fetch_format: "avif",
+          },
+        ],
+      };
+
+      const cloudinaryResult = await cloudinary.uploader.upload(
+        req.file.path,
+        transformationOptions
+      );
+      image = cloudinaryResult.secure_url;
+      public_id = cloudinaryResult.public_id;
+      fs.rm(req.file.path);
+    }
     const user = await User.create({
       username,
       email,
       password: hashPassword,
       avatar: {
-        public_id: email,
-        secure_url:
-          "https://res.cloudinary.com/ds7sd75xu/image/upload/v1730651900/user_qcnems.webp",
+        public_id: public_id,
+        secure_url:image
       },
     });
     if (!user) {

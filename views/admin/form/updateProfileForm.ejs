@@ -1,37 +1,66 @@
 <div class="container px-0">
-    <div class="row">
-      <div class="col-lg-6 col-md-8 col-12">
-        <div class="card">
-          <div class="card-header">
-            <h4>Add Category</h4>
-            <% if (error_msg.length> 0) { %>
-            <div class="custom-alert-error rounded mt-2" role="alert">
-              <%= error_msg %>
-            </div>
-            <% } %>
-            <% if (success_msg.length> 0) { %>
-            <div class="custom-alert-success rounded mt-2" role="alert">
-              <%= success_msg %>
-            </div>
-            <% } %>
+  <div class="row">
+    <div class="col-lg-6 col-md-8 col-12">
+      <div class="card">
+        <div class="card-header">
+          <h4>Update Profile</h4>
+          <% if (error_msg.length> 0) { %>
+          <div class="custom-alert-error rounded mt-2" role="alert">
+            <%= error_msg %>
           </div>
-          <div class="card-body">
-            <form action="/api/v1/category/add" method="post" onsubmit="disableSubmitButton()">
-              <div class="form-group mb-3">
-                <label for="category" class="form-label">Category Name</label>
-                <input type="text" name="name" id="category" class="form-control" placeholder="Enter Category Name" required>
+          <% } %>
+          <% if (success_msg.length> 0) { %>
+          <div class="custom-alert-success rounded mt-2" role="alert">
+            <%= success_msg %>
+          </div>
+          <% } %>
+        </div>
+        <div class="card-body">
+          <form action="/api/v1/user/update/<%-user._id %>?_method=PUT" method="post" onsubmit="disableSubmitButton()">
+            <div class="image-container ratio ratio-16x9 rounded overflow-hidden mx-auto mb-3">
+                <img src="" alt="" id="previewImage" class="preview-image w-100 h-100 object-fit-contain">
+                <label for="avatar" id="imageLabel" class="label-image-container rounded">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-upload-cloud">
+                    <polyline points="16 16 12 12 8 16"></polyline>
+                    <line x1="12" y1="12" x2="12" y2="21"></line>
+                    <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path>
+                  </svg>
+                </label>
               </div>
-              <button id="submit-button" class="btn btn-primary w-100" type="submit">Add Category</button>
-            </form>
-          </div>
+              <input type="file" class="form-control d-none" name="avatar" id="avatar" required>
+            <div class="form-group mb-3">
+              <label for="username" class="form-label">Username</label>
+              <input type="text" name="username" value="<%-user.username  %>" class="form-control mb-1" id="username" placeholder="Enter your username" autocomplete="off">
+            </div>
+            <div class="form-group mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" name="email" value="<%- user.email  %>" class="form-control mb-1" id="email" placeholder="Enter your email" autocomplete="off">
+            </div>
+            <button id="submit-button" class="btn btn-primary w-100" type="submit">Save</button>
+          </form>
         </div>
       </div>
     </div>
   </div>
-  <script>
-    function disableSubmitButton() {
-      const submitButton = document.getElementById("submit-button");
-      submitButton.disabled = true;
-      submitButton.textContent = "Submitting...";
+</div>
+<script>
+  document.getElementById('avatar').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = document.getElementById('previewImage');
+        img.src = e.target.result;
+        img.classList.remove('hidden');
+        document.getElementById('imageLabel').classList.add('hidden')
+      }
+      reader.readAsDataURL(file);
     }
-  </script>
+  });
+
+  function disableSubmitButton() {
+    const submitButton = document.getElementById("submit-button");
+    submitButton.disabled = true;
+    submitButton.textContent = "Submitting...";
+  }
+</script>

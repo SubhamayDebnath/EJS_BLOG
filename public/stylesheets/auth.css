@@ -65,3 +65,33 @@ body {
 .auth-container{
     background-color: #1a1a1a;
 }
+.image-container {
+    max-width: 40rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .profile-image-container{
+    width: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+  }
+  .icon.hidden{
+    display: none;
+  }
+  
+  #previewImage.hidden,
+  #imageLabel.hidden {
+    display: none;
+  }
+  .label-image-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #141414;
+    border: 1px dashed #495057;
+  }
+  

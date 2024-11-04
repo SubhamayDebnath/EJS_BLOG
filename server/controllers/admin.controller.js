@@ -5,6 +5,7 @@ import cloudinary from "../utils/cloudinary.js";
 config();
 import Category from "../models/category.model.js";
 import Post from "../models/post.model.js";
+import User from "../models/user.model.js";
 const jwtSecret = process.env.JWT_SECRET;
 const addCategory = async (req, res, next) => {
   try {
@@ -133,4 +134,53 @@ const addPost = async (req, res, next) => {
     res.redirect("/error");
   }
 };
-export { addCategory, deleteCategory, updateCategory, addPost };
+const updateUser=async(req,res,next)=>{
+  try {
+    const userID=req.params.id;
+    const {username,email}=req.body;
+    if(!username || !email){
+      req.flash("error_msg", "Please fill in all fields");
+      return res.redirect(`/dashboard/me/update/${userID}`);
+    }
+    const user=await User.findById(userID);
+    if(!user){
+      req.flash("error_msg","User not found");
+      return res.redirect("/dashboard/me");
+    }
+    let image=user.avatar.secure_url;
+    let public_id=user.avatar.public_id;
+    if(req.file){
+      await cloudinary.uploader.destroy(public_id);
+      const transformationOptions = {
+        transformation: [
+          {
+            quality: "auto:low",
+            fetch_format: "avif",
+          },
+        ],
+      };
+
+      const cloudinaryResult = await cloudinary.uploader.upload(
+        req.file.path,
+        transformationOptions
+      );
+
+      image = cloudinaryResult.secure_url;
+      public_id = cloudinaryResult.public_id;
+      await fs.rm(req.file.path);
+    }
+    user.avatar={
+      public_id:public_id,
+      secure_url:image
+    }
+    user.username=username
+    user.email=email
+    await user.save();
+    req.flash("success_msg", "Profile updated successfully");
+    return res.redirect("/dashboard/me");
+  } catch (error) {
+    console.log(`Update Post error : ${error}`);
+    res.redirect("/error");
+  }
+}
+export { addCategory, deleteCategory, updateCategory, addPost,updateUser };

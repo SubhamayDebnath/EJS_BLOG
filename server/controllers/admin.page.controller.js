@@ -150,7 +150,7 @@ const updateCategoryPage = async (req,res,next) => {
     res.redirect("/error");
   }
 }
-const updateUser=async (req,res,next) => {
+const updateUserPage=async (req,res,next) => {
   try {
     const locals = {
       title: "Update User Form",
@@ -180,5 +180,5 @@ export {
   addPostPage,
   addCategoryPage,
   updateCategoryPage,
-  updateUser
+  updateUserPage
 };
