@@ -69,4 +69,13 @@ const updateCategory = async (req, res, next) => {
     res.redirect("/error");
   }
 };
-export { addCategory, deleteCategory, updateCategory };
+
+const addPost=async (req,res,next) => {
+    try {
+        console.log(req.body);
+    } catch (error) {
+        console.log(`Add Post error : ${error}`);
+        res.redirect("/error");
+    }
+}
+export { addCategory, deleteCategory, updateCategory,addPost };

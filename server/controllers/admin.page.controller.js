@@ -71,7 +71,8 @@ const addPostPage = async (req, res, next) => {
       title: "Add Post Form",
       description: "Welcome to Add Post Form",
     };
-    res.render("admin/form/addPostForm", { locals, layout: adminLayout,user:req.user });
+    const categories = await Category.find();
+    res.render("admin/form/addPostForm", { locals, layout: adminLayout,user:req.user,categories });
   } catch (error) {
     console.log(`Add Post error : ${error}`);
     res.redirect("/error");
