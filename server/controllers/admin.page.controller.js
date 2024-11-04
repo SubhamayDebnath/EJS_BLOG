@@ -70,6 +70,19 @@ const contactPage = async (req, res, next) => {
     res.redirect("/error");
   }
 };
+const postByUserPage=async (req,res,next) => {
+  try {
+    const locals = {
+      title: "Post By U",
+      description: "Welcome to Post By U",
+    };
+    const posts = await Post.find({author:req.user._id}).sort({ createdAt: 1})
+    res.render("admin/userArticle", { locals, layout: adminLayout,user:req.user,posts });
+  } catch (error) {
+    console.log(`Post By User page error : ${error}`);
+    res.redirect("/error");
+  }
+}
 
 const addPostPage = async (req, res, next) => {
   try {
@@ -125,6 +138,7 @@ export {
   categoriesPage,
   usersPage,
   contactPage,
+  postByUserPage,
   addPostPage,
   addCategoryPage,
   updateCategoryPage
