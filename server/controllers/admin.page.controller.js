@@ -89,6 +89,29 @@ const addCategoryPage = async (req, res, next) => {
     res.redirect("/error");
   }
 };
+const updateCategoryPage = async (req,res,next) => {
+  try {
+    const locals = {
+      title: "Update Category Form",
+      description: "Welcome to Update Category Form",
+    };
+    const catID = req.params.id;
+    if(!catID){
+      req.flash("error_msg", "Invalid category ID");
+      return res.redirect("/dashboard/categories");
+    }
+    const category = await Category.findById(catID);
+    if(!category){
+      req.flash("error_msg", "Invalid category ID");
+      return res.redirect("/dashboard/categories");
+    }
+    res.render("admin/form/updateCategoryForm", { locals, layout: adminLayout,user:req.user,category});
+    
+  } catch (error) {
+    console.log(`Update Category error : ${error}`);
+    res.redirect("/error");
+  }
+}
 export {
   dashboard,
   articlesPage,
@@ -97,4 +120,5 @@ export {
   contactPage,
   addPostPage,
   addCategoryPage,
+  updateCategoryPage
 };

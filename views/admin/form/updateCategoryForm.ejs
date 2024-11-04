@@ -1,0 +1,37 @@
+<div class="container px-0">
+    <div class="row">
+        <div class="col-lg-6 col-md-8 col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Update Category</h4>
+                    <% if (error_msg.length> 0) { %>
+                        <div class="custom-alert-error rounded mt-2" role="alert">
+                            <%= error_msg %>
+                        </div>
+                    <% } %>
+                    <% if (success_msg.length> 0) { %>
+                        <div class="custom-alert-success rounded mt-2" role="alert">
+                            <%= success_msg %>
+                        </div>
+                    <% } %>
+                </div>
+                <div class="card-body">
+                    <form action="/api/v1/category/update/<%- category._id %>?_method=PUT" method="post" onsubmit="disableSubmitButton()">
+                        <div class="form-group mb-3">
+                            <label for="category" class="form-label">Category Name</label>
+                            <input type="text" name="name" id="category" value="<%- category.name  %>" class="form-control"  placeholder="Enter Category Name" >
+                        </div>
+                        <button id="submit-button" class="btn btn-primary w-100" type="submit">Save Category</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function disableSubmitButton() {
+        const submitButton = document.getElementById("submit-button");
+        submitButton.disabled = true;
+        submitButton.textContent = "Submitting...";
+    }
+</script>
