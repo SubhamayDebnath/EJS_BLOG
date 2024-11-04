@@ -1,56 +1,52 @@
 <header class="header position-fixed">
-    <nav class="navbar navbar-expand-md ">
-        <div class="container">
-            <a class="navbar-brand pt-0" href="/">
-                <img src="https://res.cloudinary.com/ds7sd75xu/image/upload/v1730651834/logo_awuswv.webp" alt="Logo" class="Logo">
-            </a>
-            <button class=" btn menu-btn border" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation" data-nav-toggler>
-                <div class="line"></div>
-                <div class="line"></div>
-                <div class="line"></div>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-md-0">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/articles">Articles</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/categories">Categories</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/contact">Contact</a>
-                    </li>
-                    <% if(!user){ %>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/register">Join Us</a>
-                    </li>
-                    <% } %>
-                    <% if(user){ %>
-                        <% if(user.role !== undefined) { %>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/dashboard">Dashboard</a>
-                            </li>
-                        <% } %>
-                    <% } %>
-                    
-                </ul>
-                <form action="" class="navbar-form border overflow-hidden rounded mb-md-0 mb-3">
-                    <input type="text" name="search" id="search" placeholder="Search...">
-                    <button title="search button">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="feather feather-search">
-                            <circle cx="11" cy="11" r="8"></circle>
-                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                        </svg>
-                    </button>
-                </form>
-            </div>
-        </div>
-    </nav>
+  <nav class="navbar navbar-expand-md ">
+    <div class="container">
+      <a class="navbar-brand pt-0" href="/">
+        <img src="https://res.cloudinary.com/ds7sd75xu/image/upload/v1730651834/logo_awuswv.webp" alt="Logo" class="Logo">
+      </a>
+      <button class=" btn menu-btn border" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" data-nav-toggler>
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+          <li class="nav-item">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/articles">Articles</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/categories">Categories</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/contact">Contact</a>
+          </li>
+          <% if(!user){ %>
+          <li class="nav-item">
+            <a class="nav-link" href="/register">Join Us</a>
+          </li>
+          <% } %>
+          <% if(user){ %>
+          <% if(user.role !== undefined) { %>
+          <li class="nav-item">
+            <a class="nav-link" href="/dashboard">Dashboard</a>
+          </li>
+          <% } %>
+          <% } %>
+
+        </ul>
+        <form action="" class="navbar-form border overflow-hidden rounded mb-md-0 mb-3">
+          <input type="text" name="search" id="search" placeholder="Search...">
+          <button title="search button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </button>
+        </form>
+      </div>
+    </div>
+  </nav>
 </header>

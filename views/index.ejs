@@ -1,52 +1,52 @@
 <section class="py-5 hero-section position-relative mb-5">
-    <div class="d-flex flex-column justify-content-center w-100 pt-5">
-        <h1 class="display-5 fw-bold">The Journey of Self-Discovery</h1>
-        <p>Exploring thoughts, adventures, and the art of living fully.</p>
-    </div>
-    <div id="particles-js" class="position-absolute top-0"></div>
+  <div class="d-flex flex-column justify-content-center w-100 pt-5">
+    <h1 class="display-5 fw-bold">The Journey of Self-Discovery</h1>
+    <p>Exploring thoughts, adventures, and the art of living fully.</p>
+  </div>
+  <div id="particles-js" class="position-absolute top-0"></div>
 </section>
 
 <% if(categories.length){ %>
 <section class="mb-5">
-    <h2 class="h3 text-white fw-bold mb-3">Categories</h2>
-    <div class="d-flex align-items-center flex-wrap gap-2">
-        <% categories.forEach((data)=>{ %>
-        <a href="/category/<%-data.name%>" class="btn tag tag-btn border text-capitalize">
-            <%- data.name  %>
-        </a>
-        <% })%>    
-    </div>
+  <h2 class="h3 text-white fw-bold mb-3">Categories</h2>
+  <div class="d-flex align-items-center flex-wrap gap-2">
+    <% categories.forEach((data)=>{ %>
+    <a href="/category/<%-data.name%>" class="btn tag tag-btn border text-capitalize">
+      <%- data.name  %>
+    </a>
+    <% })%>
+  </div>
 </section>
 <% } %>
 <section class="mb-5">
-    <h2 class="h3 text-white fw-bold mb-3">Recent Posts</h2>
-    <div class="container px-0">
+  <h2 class="h3 text-white fw-bold mb-3">Recent Posts</h2>
+  <div class="container px-0">
     <% if(latestPosts.length){ %>
     <div class="row ">
-        <% latestPosts.forEach((data)=>{%> 
-        <a href="" class="col-lg-4 col-md-6 col-12 custom-card">
-            <div class="post-image-container overflow-hidden ratio ratio-16x9 rounded">
-                <img src="<%-data.image.secure_url %>" alt="<%-data.title %>" class="w-100 h-100 object-fit-cover">
-            </div>
-            <div class="post-details-container px-2 py-3">
-                <span class="btn tag tag-btn border text-capitalize"><%- data.category.name %></span>
-                <h1 class="fs-5 post-card-title text-white my-2">
-                    <%- data.title.replace(/<[^>]+>/g, '').length > 90 ? data.title.replace(/<[^>]+>/g, '').slice(0, 90) + '...' : data.title.replace(/<[^>]+>/g, '') %>
-                </h1>
-                <p class="post-summary">
-                    <%- data.content.replace(/<[^>]+>/g, '').length > 120 ? data.content.replace(/<[^>]+>/g, '').slice(0, 120) + '...' : data.content.replace(/<[^>]+>/g, '') %>
-                </p>
-            </div>
-        </a>
-        <%})%>
+      <% latestPosts.forEach((data)=>{%>
+      <a href="" class="col-lg-4 col-md-6 col-12 custom-card">
+        <div class="post-image-container overflow-hidden ratio ratio-16x9 rounded">
+          <img src="<%-data.image.secure_url %>" alt="<%-data.title %>" class="w-100 h-100 object-fit-cover">
         </div>
+        <div class="post-details-container px-2 py-3">
+          <span class="btn tag tag-btn border text-capitalize"><%- data.category.name %></span>
+          <h1 class="fs-5 post-card-title text-white my-2">
+            <%- data.title.replace(/<[^>]+>/g, '').length > 90 ? data.title.replace(/<[^>]+>/g, '').slice(0, 90) + '...' : data.title.replace(/<[^>]+>/g, '') %>
+          </h1>
+          <p class="post-summary">
+            <%- data.content.replace(/<[^>]+>/g, '').length > 120 ? data.content.replace(/<[^>]+>/g, '').slice(0, 120) + '...' : data.content.replace(/<[^>]+>/g, '') %>
+          </p>
+        </div>
+      </a>
+      <%})%>
+    </div>
     <% }else{ %>
-        <p>No Post Found !</p>
+    <p>No Post Found !</p>
     <% } %>
-    </div>
-<% if(latestPosts.length){ %>
-    <div class="d-flex align-items-center justify-content-center">
-        <a href="/articles" class="btn tag border">Explore Now</a>
-    </div>
-<% } %>
+  </div>
+  <% if(latestPosts.length){ %>
+  <div class="d-flex align-items-center justify-content-center">
+    <a href="/articles" class="btn tag border">Explore Now</a>
+  </div>
+  <% } %>
 </section>
