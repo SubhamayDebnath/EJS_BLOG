@@ -49,6 +49,7 @@
                   <td class="text-capitalize"><%- data.username %></td>
                   <td><%- data.email%></td>
                   <td>
+                    <%  if(user.role == 'SUPERUSER'){ %>                    
                     <form action="">
                       <select name="role" id="role" class="form-control form-control-sm">
                         <option value="SUPERUSER" <%  if(data.role == 'SUPERUSER'){ %> selected <% } %>>SUPERUSER</option>
@@ -56,6 +57,9 @@
                         <option value="USER" <%  if(data.role == 'USER'){ %> selected <% } %>>USER</option>
                       </select>
                     </form>
+                    <%}else{%>
+                      <%-data.role  %>
+                    <% } %>
                   </td>
                   <td>
                     <form action="">
