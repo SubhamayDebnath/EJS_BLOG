@@ -53,12 +53,29 @@ const usersPage = async (req, res, next) => {
       title: "Users",
       description: "Welcome to Users",
     };
+
     res.render("admin/users", { locals, layout: adminLayout,user:req.user });
   } catch (error) {
     console.log(`Users error : ${error}`);
     res.redirect("/error");
   }
 };
+
+const userPage = async (req,res,next) => {
+  try {
+    const userID=req.user._id
+    const user = await User.findById({_id:userID});
+    const numberOfPostByUser=(await Post.find({author:req.user._id})).length
+    const locals = {
+      title: user.username,
+      description: "Welcome to "+user.username,
+    };
+    res.render("admin/user", { locals, layout: adminLayout,user:req.user,user,numberOfPostByUser });
+  } catch (error) {
+    console.log(`User error : ${error}`);
+    res.redirect("/error");
+  }
+}
 const contactPage = async (req, res, next) => {
   try {
     const locals = {
@@ -138,6 +155,7 @@ export {
   articlesPage,
   categoriesPage,
   usersPage,
+  userPage,
   contactPage,
   postByUserPage,
   addPostPage,

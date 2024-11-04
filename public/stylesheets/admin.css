@@ -191,6 +191,23 @@ main {
 .custom-dropdown.show {
   transform: scale(1);
 }
+.user-image-container{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+@media (max-width:768px) {
+  .user-image-container{
+    width: 75%;
+  }
+}
+@media (max-width:576px) {
+  .user-image-container{
+    width: 50%;
+  }
+}
 @media (max-width: 992px) {
   .side-bar {
     position: fixed;
@@ -220,3 +237,4 @@ main {
     border-top-left-radius: 0 !important;
   }
 }
+

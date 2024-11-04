@@ -4,6 +4,7 @@ import {
   articlesPage,
   categoriesPage,
   usersPage,
+  userPage,
   contactPage,
   postByUserPage,
   addPostPage,
@@ -16,6 +17,7 @@ router.get("/",isAuthorized,dashboard);
 router.get("/articles",isAuthorized,articlesPage);
 router.get("/categories",isAuthorized,categoriesPage);
 router.get("/users",isAuthorized,usersPage);
+router.get("/me",isAuthorized,userPage)
 router.get("/contact",isAuthorized,contactPage);
 router.get("/me/article",isAuthorized,postByUserPage)
 router.get("/articles/add",isAuthorized,addPostPage)
