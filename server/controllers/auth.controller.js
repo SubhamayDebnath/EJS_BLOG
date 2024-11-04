@@ -99,4 +99,13 @@ const login = async (req, res, next) => {
     res.redirect("/error");
   }
 };
-export { registerPage, loginPage, register, login };
+const logout=async (req,res,next) => {
+  try {
+    res.clearCookie('token');
+    return res.redirect("/login");
+  } catch (error) {
+    console.log(`Logout error : ${error}`);
+    res.redirect("/error");
+  }
+}
+export { registerPage, loginPage, register, login,logout };
