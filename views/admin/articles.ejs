@@ -20,6 +20,7 @@
                                     <th>Tags</th>
                                     <th>Publish</th>
                                     <th>Username</th>
+                                    <th>Role</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
@@ -54,7 +55,10 @@
                                                 <%- data.author.username  %>
                                             </td>
                                             <td>
-                                                <form action="" style="width: 120px;">
+                                                <%- data.author.role  %>
+                                            </td>
+                                            <td>
+                                                <form action="" style="width: 100px;">
                                                     <select name="status" id="status" class="form-select form-select-sm">
                                                         <option value="publish" class="text-capitalize" <%- data.status===true ? 'selected' :'' %>>Publish</option>
                                                         <option value="draft" class="text-capitalize"<%- data.status===false ? 'selected' :'' %>>Draft</option>
@@ -101,7 +105,7 @@
                                         </tr>
                                     <% }) %>
                                 <% }else{ %>
-                                    <td colspan="9" class="text-center text-white h5">No Post Found!</td>
+                                    <td colspan="10" class="text-center text-white h5">No Post Found!</td>
                                 <% } %>
                             </tbody>
                         </table>

@@ -11,7 +11,8 @@ const dashboard = async (req, res, next) => {
     const numberOfUsers = await User.countDocuments();
     const numberOfCategories = await Category.countDocuments();
     const numberOfPosts = await Post.countDocuments();
-    res.render("admin/index", { locals, layout: adminLayout ,user:req.user, numberOfUsers,numberOfCategories ,numberOfPosts});
+    const numberOfPostByUser=(await Post.find({author:req.user._id})).length
+    res.render("admin/index", { locals, layout: adminLayout ,user:req.user, numberOfUsers,numberOfCategories ,numberOfPosts,numberOfPostByUser});
   } catch (error) {
     console.log(`Dashboard error : ${error}`);
     res.redirect("/error");
@@ -25,7 +26,7 @@ const articlesPage = async (req, res, next) => {
     };
     const posts = await Post.find()
     .populate('category', 'name') 
-    .populate('author', 'username') 
+    .populate('author', 'username role') 
     .sort({ createdAt: 1 });
     res.render("admin/articles", { locals, layout: adminLayout,user:req.user,posts });
   } catch (error) {
@@ -76,7 +77,7 @@ const postByUserPage=async (req,res,next) => {
       title: "Post By U",
       description: "Welcome to Post By U",
     };
-    const posts = await Post.find({author:req.user._id}).sort({ createdAt: 1})
+    const posts = await Post.find({author:req.user._id}).populate('author', 'username').sort({ createdAt: 1})
     res.render("admin/userArticle", { locals, layout: adminLayout,user:req.user,posts });
   } catch (error) {
     console.log(`Post By User page error : ${error}`);
