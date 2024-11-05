@@ -16,7 +16,7 @@ const router = express.Router();
 router.get("/register", isLoggedIn, registerPage);
 router.get("/login", isLoggedIn, loginPage);
 router.get("/auth/password/forget-password", isLoggedIn, forgetPasswordPage);
-router.get("/auth/password/reset-password", isLoggedIn, resetPasswordPage);
+router.get("/auth/password/reset-password/:slug", isLoggedIn, resetPasswordPage);
 router.post("/api/v1/register", upload.single("avatar"), register);
 router.post("/api/v1/login", login);
 router.post("/api/v1/reset-password", resetPassword);

@@ -4,6 +4,7 @@ import { config } from "dotenv";
 import fs from "fs/promises";
 import crypto from "crypto";
 import cloudinary from "../utils/cloudinary.js";
+import sendEmail from '../utils/sendMail.js'
 config();
 import User from "../models/user.model.js";
 const jwtSecret = process.env.JWT_SECRET;
@@ -65,9 +66,34 @@ const resetPasswordPage=async (req,res,next)=>{
 }
 const resetPassword = async(req,res,next)=>{
   try {
-    console.log(req.body);
+    const {email} = req.body;
+    if(!email){
+      req.flash("error_msg", "Email is required");
+      return res.redirect("/auth/password/forget-password");
+    }
+    const user=await User.findOne({email:email});
+    if(!user){
+      req.flash("error_msg", "Please enter valid email");
+      return res.redirect("/auth/password/forget-password");
+    }
+    user.forgotPasswordToken=crypto.createHash("sha256").update(resetToken).digest("hex");
+    user.forgotPasswordExpiry=Date.now() + 15 * 60 * 1000;
     const resetToken = crypto.randomBytes(20).toString("hex");
-    console.log(resetToken)
+    await user.save();
+    const resetPasswordURL = `${process.env.APP_URL}/auth/password/reset-password/${resetToken}`;
+    const subject = "Reset Password";
+    const message = `You can reset your password by clicking <a href=${resetPasswordURL} target="_blank">Reset your password</a>\nIf the above link does not work for some reason then copy paste this link in new tab ${resetPasswordURL}.\nIf you have not requested this, kindly ignore.`;
+    try {
+      await sendEmail(email, subject, message);
+      req.flash("success_msg", `Reset password has been send to ${email} successfully`);
+      return res.redirect("/auth/password/forget-password");
+    } catch (error) {
+      user.forgotPasswordExpiry = undefined;
+      user.forgotPasswordToken = undefined;
+      await user.save();
+      req.flash("error_msg", "Failed to send email");
+      return res.redirect("/auth/password/forget-password");
+    }
   } catch (error) {
     console.log(`Reset Password error : ${error}`);
     res.redirect("/error");
