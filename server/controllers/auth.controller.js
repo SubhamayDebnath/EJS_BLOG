@@ -111,20 +111,27 @@ const resetPassword = async (req, res, next) => {
   try {
     const { token, password } = req.body;
     const resetToken = token;
+    const newPassword=await bcrypt.hash(password, 10);
     const forgotPasswordToken = crypto.createHash("sha256").update(resetToken).digest("hex");
     const user = await User.findOne({
       forgotPasswordToken,
       forgotPasswordExpiry: { $gt: Date.now() },
     });
+
     if (!user) {
       req.flash("error_msg", "Invalid reset token");
       return res.redirect("/auth/password/forget-password");
     }
-    user.password = password;
+    if(user.password === newPassword){
+      req.flash("error_msg", "Your new password cannot be the same as the current password.");
+      return res.redirect(`/auth/password/reset-password/${resetToken}`);
+    }
+    user.password = newPassword;
     user.forgotPasswordExpiry = undefined;
     user.forgotPasswordToken = undefined;
     await user.save();
-    req.flash("success_msg", "Reset Password successfully");
+    req.flash("success_msg", "Reset Password successfully,Please login to access your account");
+
     return res.redirect("/login");
   } catch (error) {
     console.log(`Reset Password error : ${error}`);
