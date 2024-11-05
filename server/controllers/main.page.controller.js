@@ -4,7 +4,12 @@ import Category from "../models/category.model.js"
 import jwt from "jsonwebtoken";
 import { config } from "dotenv";
 config();
+
 const utilsLayout = "../views/layouts/utils";
+
+/*
+  Home Page Render
+*/ 
 const homePage = async (req, res, next) => {
   try {
     const locals = {
@@ -19,6 +24,9 @@ const homePage = async (req, res, next) => {
     res.redirect("/error");
   }
 };
+/*
+  Articles Page Render
+*/ 
 const articlesPage = async (req, res, next) => {
   try {
     const locals = {
@@ -52,7 +60,9 @@ const articlesPage = async (req, res, next) => {
     res.redirect("/error");
   }
 };
-
+/*
+  Full article Page Render
+*/ 
 const articlePage=async (req,res,next) => {
   try {
     const articleID=req.params.id;
@@ -73,7 +83,9 @@ const articlePage=async (req,res,next) => {
     res.redirect("/error");
   }
 }
-
+/*
+  Category Page Render
+*/ 
 const categoriesPage = async (req, res, next) => {
   try {
     const locals = {
@@ -87,7 +99,9 @@ const categoriesPage = async (req, res, next) => {
     res.redirect("/error");
   }
 };
-
+/*
+  Contact Page Render
+*/ 
 const contactPage = async (req, res, next) => {
   try {
     const locals = {
@@ -100,7 +114,9 @@ const contactPage = async (req, res, next) => {
     res.redirect("/error");
   }
 };
-
+/*
+  Error Page Render
+*/ 
 const errorPage=async (req,res,next) => {
   res.render("utils/error", {
     locals: { title: "Error", description: "Welcome to our home page" },

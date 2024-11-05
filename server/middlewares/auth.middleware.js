@@ -4,7 +4,9 @@ import User from "../models/user.model.js";
 config();
 
 const jwtSecret = process.env.JWT_SECRET;
-
+/*
+  Check user login or not
+*/ 
 const isLoggedIn = async (req, res, next) => {
   try {
     const { token } = req.cookies;
@@ -17,7 +19,9 @@ const isLoggedIn = async (req, res, next) => {
     res.redirect("/error");
   }
 };
-
+/*
+  Check user have access or not
+*/ 
 const isAuthorized = async (req, res, next) => {
   try {
     const { token } = req.cookies;
@@ -49,7 +53,9 @@ const isAuthorized = async (req, res, next) => {
     res.redirect("/error");
   }
 };
-
+/*
+  set user details in request
+*/ 
 const isAuthenticated = async (req, res, next) => {
   try {
     const { token } = req.cookies;

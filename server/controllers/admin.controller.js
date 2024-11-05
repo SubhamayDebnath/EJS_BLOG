@@ -1,12 +1,18 @@
 import jwt from "jsonwebtoken";
 import { config } from "dotenv";
 import fs from "fs/promises";
-import cloudinary from "../utils/cloudinary.js";
 config();
+
+import cloudinary from "../utils/cloudinary.js";
 import Category from "../models/category.model.js";
 import Post from "../models/post.model.js";
 import User from "../models/user.model.js";
+
 const jwtSecret = process.env.JWT_SECRET;
+
+/*
+  Add Category Method
+*/ 
 const addCategory = async (req, res, next) => {
   try {
     const { name } = req.body;
@@ -32,6 +38,9 @@ const addCategory = async (req, res, next) => {
     res.redirect("/error");
   }
 };
+/*
+  Delete Category Method
+*/ 
 const deleteCategory = async (req, res, next) => {
   try {
     const catID = req.params.id;
@@ -51,6 +60,9 @@ const deleteCategory = async (req, res, next) => {
     res.redirect("/error");
   }
 };
+/*
+  Update Category Method
+*/ 
 const updateCategory = async (req, res, next) => {
   try {
     const catId = req.params.id;
@@ -77,7 +89,9 @@ const updateCategory = async (req, res, next) => {
     res.redirect("/error");
   }
 };
-
+/*
+  Add Post Method
+*/ 
 const addPost = async (req, res, next) => {
   try {
     const { title, postBody, tags, category, status } = req.body;
@@ -134,22 +148,25 @@ const addPost = async (req, res, next) => {
     res.redirect("/error");
   }
 };
-const updateUser=async(req,res,next)=>{
+/*
+  Update User Method
+*/ 
+const updateUser = async (req, res, next) => {
   try {
-    const userID=req.params.id;
-    const {username}=req.body;
-    if(!username ){
+    const userID = req.params.id;
+    const { username } = req.body;
+    if (!username) {
       req.flash("error_msg", "Please fill in all fields");
       return res.redirect(`/dashboard/me/update/${userID}`);
     }
-    const user=await User.findById(userID);
-    if(!user){
-      req.flash("error_msg","User not found");
+    const user = await User.findById(userID);
+    if (!user) {
+      req.flash("error_msg", "User not found");
       return res.redirect("/dashboard/me");
     }
-    let image=user.avatar.secure_url;
-    let public_id=user.avatar.public_id;
-    if(req.file){
+    let image = user.avatar.secure_url;
+    let public_id = user.avatar.public_id;
+    if (req.file) {
       await cloudinary.uploader.destroy(public_id);
       const transformationOptions = {
         transformation: [
@@ -168,12 +185,11 @@ const updateUser=async(req,res,next)=>{
       image = cloudinaryResult.secure_url;
       public_id = cloudinaryResult.public_id;
       await fs.rm(req.file.path);
- 
     }
-    user.avatar={
-      public_id:public_id,
-      secure_url:image
-    }
+    user.avatar = {
+      public_id: public_id,
+      secure_url: image,
+    };
     if (username) {
       user.username = username;
     }
@@ -184,5 +200,5 @@ const updateUser=async(req,res,next)=>{
     console.log(`Update Post error : ${error}`);
     res.redirect("/error");
   }
-}
-export { addCategory, deleteCategory, updateCategory, addPost,updateUser };
+};
+export { addCategory, deleteCategory, updateCategory, addPost, updateUser };

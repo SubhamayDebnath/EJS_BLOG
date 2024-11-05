@@ -7,6 +7,8 @@ import cloudinary from "../utils/cloudinary.js";
 import sendEmail from "../utils/sendMail.js";
 config();
 import User from "../models/user.model.js";
+
+
 const jwtSecret = process.env.JWT_SECRET;
 const cookieOption = {
   maxAge: 24 * 60 * 60 * 1000,
@@ -14,6 +16,10 @@ const cookieOption = {
   secure: true,
 };
 const authenticationLayout = "../views/layouts/authentication";
+
+/*
+  Register Page Render
+*/ 
 const registerPage = async (req, res, next) => {
   try {
     const locals = {
@@ -26,7 +32,9 @@ const registerPage = async (req, res, next) => {
     res.redirect("/error");
   }
 };
-
+/*
+  Login Page Render
+*/ 
 const loginPage = async (req, res, next) => {
   try {
     const locals = {
@@ -39,7 +47,9 @@ const loginPage = async (req, res, next) => {
     res.redirect("/error");
   }
 };
-
+/*
+  Forget Password Using Mail Page Render
+*/ 
 const forgetPasswordPage = async (req, res, next) => {
   try {
     const locals = {
@@ -52,6 +62,9 @@ const forgetPasswordPage = async (req, res, next) => {
     res.redirect("/error");
   }
 };
+/*
+  Reset password Using Mail Page Render
+*/ 
 const resetPasswordPage = async (req, res, next) => {
   try {
     const locals = {
@@ -65,6 +78,9 @@ const resetPasswordPage = async (req, res, next) => {
     res.redirect("/error");
   }
 };
+/*
+  Send Reset Mail Method
+*/ 
 const resetPasswordSendMail = async (req, res, next) => {
   try {
     const { email } = req.body;
@@ -107,6 +123,9 @@ const resetPasswordSendMail = async (req, res, next) => {
     res.redirect("/error");
   }
 };
+/*
+  Reset password Method
+*/ 
 const resetPassword = async (req, res, next) => {
   try {
     const { token, password } = req.body;
@@ -138,6 +157,9 @@ const resetPassword = async (req, res, next) => {
     res.redirect("/error");
   }
 };
+/*
+  User Register Method
+*/ 
 const register = async (req, res, next) => {
   try {
     const { username, email, password } = req.body;
@@ -196,6 +218,10 @@ const register = async (req, res, next) => {
   }
 };
 
+/*
+  User Login Method
+*/ 
+
 const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -225,6 +251,9 @@ const login = async (req, res, next) => {
     res.redirect("/error");
   }
 };
+/*
+  Logout Method
+*/ 
 const logout = async (req, res, next) => {
   try {
     res.clearCookie("token");
