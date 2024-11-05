@@ -27,6 +27,10 @@ a {
   text-decoration: none;
   color: inherit;
 }
+main{
+  min-height: calc(100dvh - 187px) !important;
+  height: 100%;
+}
 
 body {
   font-style: normal;
@@ -47,15 +51,10 @@ body {
   left: 0;
   right: 0;
   z-index: 99999;
-  transition: all 300ms ease-in-out;
 }
 
 .header.color {
   background-color: #141414;
-}
-
-.navbar-collapse {
-  transition: all 300ms ease-in-out !important;
 }
 
 .menu-btn {

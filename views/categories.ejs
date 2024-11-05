@@ -14,15 +14,13 @@
 <section class="mb-5">
   <div class="container px-0">
     <% if(categories.length) { %>
-    <div class="row">
-      <% categories.forEach((data)=>{%>
-      <div class="category-card col-lg-3 col-md-4 col-6 mb-4">
-        <a href="/category/<%-data.name%>" class="w-100 d-flex align-items-center justify-content-center fs-5 fw-semibold text-white text-capitalize ratio ratio-21x9 border rounded">
-          <%-data.name  %>
-        </a>
+      <div class="d-flex flex-wrap align-items-center gap-3">
+        <% categories.forEach((data)=>{%>
+          <a href="/category/<%-data.name%>" class="btn tag tag-btn border text-capitalize">
+            <%-data.name  %>
+          </a>
+        <%}) %>
       </div>
-      <%}) %>
-    </div>
     <% }else{ %>
     <div class="my-5 py-5">
       <p class="text-center">No Categories Found.</p>
