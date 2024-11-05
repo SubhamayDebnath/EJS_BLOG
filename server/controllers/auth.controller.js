@@ -91,7 +91,7 @@ const resetPasswordSendMail = async (req, res, next) => {
       await sendEmail(email, subject, message);
       req.flash(
         "success_msg",
-        `Reset password has been send to ${email} successfully`
+        `<p class="text-center text-warning"> Reset password has been send to ${email} successfully.Please check your email inbox and spam folder for the password reset link.</p> `
       );
       const token = jwt.sign({ userId: user._id }, jwtSecret);
       return res.redirect("/auth/password/forget-password");
@@ -111,7 +111,7 @@ const resetPassword = async (req, res, next) => {
   try {
     const { token, password } = req.body;
     const resetToken = token;
-    const forgotPasswordToken = crypto.create("sha256").update(resetToken).digest("hex");
+    const forgotPasswordToken = crypto.createHash("sha256").update(resetToken).digest("hex");
     const user = await User.findOne({
       forgotPasswordToken,
       forgotPasswordExpiry: { $gt: Date.now() },
