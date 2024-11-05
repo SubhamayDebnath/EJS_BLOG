@@ -18,8 +18,8 @@ router.get("/login", isLoggedIn, loginPage);
 router.get("/auth/password/forget-password", isLoggedIn, forgetPasswordPage);
 router.get("/auth/password/reset-password/:slug", isLoggedIn, resetPasswordPage);
 router.post("/api/v1/register", upload.single("avatar"), register);
-router.post("/api/v1/login", login);
-router.post("/api/v1/reset-password", resetPasswordSendMail);
+router.post("/api/v1/login",login);
+router.post("/api/v1/reset-password",isLoggedIn, resetPasswordSendMail);
 router.get("/logout", isAuthorized, logout);
 
 export default router;

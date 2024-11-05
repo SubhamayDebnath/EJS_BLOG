@@ -76,12 +76,12 @@ const resetPasswordSendMail = async (req, res, next) => {
       req.flash("error_msg", "Please enter valid email");
       return res.redirect("/auth/password/forget-password");
     }
+    const resetToken = crypto.randomBytes(20).toString("hex");
     user.forgotPasswordToken = crypto
       .createHash("sha256")
       .update(resetToken)
       .digest("hex");
     user.forgotPasswordExpiry = Date.now() + 15 * 60 * 1000;
-    const resetToken = crypto.randomBytes(20).toString("hex");
     await user.save();
     const resetPasswordURL = `${process.env.APP_URL}/auth/password/reset-password/${resetToken}`;
     const subject = "Reset Password";
@@ -237,4 +237,5 @@ export {
   forgetPasswordPage,
   resetPasswordPage,
   resetPasswordSendMail,
+  resetPassword
 };
