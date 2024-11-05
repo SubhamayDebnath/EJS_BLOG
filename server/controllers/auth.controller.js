@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { config } from "dotenv";
 import fs from "fs/promises";
+import crypto from "crypto";
 import cloudinary from "../utils/cloudinary.js";
 config();
 import User from "../models/user.model.js";
@@ -46,7 +47,29 @@ const forgetPasswordPage=async (req,res,next)=>{
     };
     res.render("auth/forgetPassword", { locals, layout: authenticationLayout });
   } catch (error) {
-    console.log(`Forget Password error : ${error}`);
+    console.log(`Forget Password Page error : ${error}`);
+    res.redirect("/error");
+  }
+}
+const resetPasswordPage=async (req,res,next)=>{
+  try {
+    const locals = {
+      title: "Reset Password Page",
+      description: "Welcome to Reset Password Page",
+    };
+    res.render("auth/resetPassword", { locals, layout: authenticationLayout });
+  } catch (error) {
+    console.log(`Reset Password Page error : ${error}`);
+    res.redirect("/error");
+  }
+}
+const resetPassword = async(req,res,next)=>{
+  try {
+    console.log(req.body);
+    const resetToken = crypto.randomBytes(20).toString("hex");
+    console.log(resetToken)
+  } catch (error) {
+    console.log(`Reset Password error : ${error}`);
     res.redirect("/error");
   }
 }
@@ -146,4 +169,4 @@ const logout=async (req,res,next) => {
     res.redirect("/error");
   }
 }
-export { registerPage, loginPage, register, login,logout,forgetPasswordPage };
+export { registerPage, loginPage, register, login,logout,forgetPasswordPage,resetPasswordPage,resetPassword };
