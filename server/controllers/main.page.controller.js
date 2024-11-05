@@ -53,6 +53,27 @@ const articlesPage = async (req, res, next) => {
   }
 };
 
+const articlePage=async (req,res,next) => {
+  try {
+    const articleID=req.params.id;
+    if(!articleID){
+      return res.redirect("/error");
+    }
+    const article =  await Post.findById(articleID).populate("category", "name").populate('author','username avatar');
+    if(!article){
+      return res.redirect("/error");
+    }
+    const locals = {
+      title: article.title,
+      description: "Welcome to our articles page",
+    };
+    res.render("article", { locals,user:req.user,article});
+  } catch (error) {
+    console.log(`Article page error : ${error}`);
+    res.redirect("/error");
+  }
+}
+
 const categoriesPage = async (req, res, next) => {
   try {
     const locals = {
@@ -88,4 +109,4 @@ const errorPage=async (req,res,next) => {
 }
 
 
-export { homePage, articlesPage, contactPage, categoriesPage,errorPage};
+export { homePage, articlesPage,articlePage, contactPage, categoriesPage,errorPage};

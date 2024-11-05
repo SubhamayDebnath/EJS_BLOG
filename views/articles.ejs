@@ -9,7 +9,7 @@
     <% if(posts.length) { %>
     <div class="row ">
       <% posts.forEach((data)=>{%>
-      <a href="" class="col-lg-4 col-md-6 col-12 custom-card">
+      <a href="/article/<%- data._id  %>" class="col-lg-4 col-md-6 col-12 custom-card">
         <div class="post-image-container overflow-hidden ratio ratio-16x9 rounded">
           <img src="<%-data.image.secure_url %>" alt="<%-data.title %>" class="w-100 h-100 object-fit-cover">
         </div>

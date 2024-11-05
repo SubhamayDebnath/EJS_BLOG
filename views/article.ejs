@@ -1,0 +1,105 @@
+<section class="py-5 hero-banner-section position-relative mb-5">
+    <div class="d-flex align-items-center justify-content-center pt-5">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="/" class="display-8 text-white fw-bold text-decoration-none text-white">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page">
+                <a href="/articles" class="display-8 text-white fw-bold text-decoration-none text-white">Blog</a>
+              </li>
+            </ol>
+        </nav>
+    </div>
+    <div id="particles-js" class="position-absolute top-0"></div>
+</section>
+<section class="mb-5">
+    <div class="container px-0">
+        <div class="row">
+            <div class="col-lg-10 col-12 mx-auto">
+                <h1 class="display-6 fw-bold text-white mb-3"><%- article.title%></h1>
+                <div class="d-flex align-items-center justify-content-between gap-1 mb-4">
+                    <div class="d-flex align-items-center gap-2">
+                        <div class="author-container d-flex align-items-center justify-content-center rounded-circle overflow-hidden">
+                            <img src="<%-article.author.avatar.secure_url%>" alt="<%-article.author.username%>" class="h-100 w-100 object-fit-contain">
+                        </div>
+                        <span><%-article.author.username%></span>
+                    </div>
+                    <span><%= new Date(article.createdAt).toDateString() %></span>
+                </div>
+                <div class="ratio ratio-16x9 overflow-hidden rounded mb-4">
+                    <img src="<%-article.image.secure_url%>" alt="<%-article.title%>" class="w-100 h-100 object-fit-cover">
+                </div>
+                <div class="text-wrap overflow-hidden mb-5">
+                    <%- article.content  %>
+                </div>
+                <div class="d-flex align-items-center gap-2 mb-4 mt-5">
+                    <h1 class="d-inline-block text-white fs-4 mb-0 fw-medium">Article Tags : </h1>
+                    <% if (Array.isArray(article.tags) && article.tags.length > 0) { %>
+                        <% article.tags.forEach(tag => { %>
+                            <span class="py-1 px-2 text-muted rounded article-tag text-capitalize"><%= tag %></span>
+                        <% }) %>
+                    <% } %>
+                </div>
+                <div class="mb-4">
+                    <h1 class="text-white fs-4 fw-medium mb-3">Comments :</h1>
+                    <section class="comment-section d-flex flex-column gap-3">
+                        <div class="commant-container">
+                            <div class="comment-block">
+                                <div class="user d-flex align-items-center gap-2 mb-2">
+                                    <div class="user-container d-flex align-items-center justify-content-center rounded-circle overflow-hidden">
+                                        <img src="./images/464617415_1703465547109193_3589069190848586939_n.jpg" alt="" class="h-100 w-100 object-fit-contain">
+                                    </div>
+                                    <span class="text-white">Subhamay</span>
+                                    <span>Aug 12 ,2026</span>
+                                </div>
+                                <p>awasome article</p>
+                                <div class="d-flex align-items-center gap-3 mt-3">
+                                    <a href="" class="d-flex align-items-center gap-1 ">
+                                        <svg xmlns="http://www.w3.org/2000/svg"  width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart text-danger"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                                        Like ( 1 )
+                                    </a>
+                                    <a href="" class="d-flex align-items-center gap-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                                        Reply ( 1 )
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <div class="container px-0">
+
+                    <div class="row">
+                        <div class="col-md-8 col-12 mx-auto">
+                            <div class="card">
+                                <div class="card-header ">
+                                    <h5 class="mt-2">Leave a comment</h5>
+                                </div>
+                                <div class="card-body">
+                                    <form action="">
+                                        <div class="form-group mb-3">
+                                            <label for="name" class="form-label">Name</label>
+                                            <input type="text" name="name" id="name" placeholder="Enter your name" required class="form-control">
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label for="email" class="form-label">Email</label>
+                                            <input type="email" name="email" id="email" placeholder="Enter your email" required class="form-control">
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label for="comment" class="form-label">Comment</label>
+                                            <textarea name="comment" id="comment" rows="6" class="form-control" placeholder="Comment..." required></textarea>
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <input type="checkbox" name="save" id="save">
+                                            <label for="save" class="form-label">Save my name and email in this browser for the next time I comment.</label>
+                                        </div>
+                                        <button class="btn-primary btn w-100">Comment</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

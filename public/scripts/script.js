@@ -9,14 +9,13 @@ const addEventOnElements = function (elements, eventType, callback) {
   const header = document.querySelector('.header');
   const toggleNavbar = function () {
     menuBtn.classList.toggle("active");
-    header.classList.toggle("color");
     document.querySelector("body").classList.toggle("overflow-hidden");
   };
   addEventOnElements(navTogglers, "click", toggleNavbar);
   window.onscroll = function() {
     if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
-        header.classList.add('active');
+        header.classList.add('color');
     } else {
-        header.classList.remove('active');
+        header.classList.remove('color');
     }
 };

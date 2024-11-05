@@ -137,8 +137,8 @@ const addPost = async (req, res, next) => {
 const updateUser=async(req,res,next)=>{
   try {
     const userID=req.params.id;
-    const {username,email}=req.body;
-    if(!username || !email){
+    const {username}=req.body;
+    if(!username ){
       req.flash("error_msg", "Please fill in all fields");
       return res.redirect(`/dashboard/me/update/${userID}`);
     }
@@ -168,13 +168,15 @@ const updateUser=async(req,res,next)=>{
       image = cloudinaryResult.secure_url;
       public_id = cloudinaryResult.public_id;
       await fs.rm(req.file.path);
+ 
     }
     user.avatar={
       public_id:public_id,
       secure_url:image
     }
-    user.username=username
-    user.email=email
+    if (username) {
+      user.username = username;
+    }
     await user.save();
     req.flash("success_msg", "Profile updated successfully");
     return res.redirect("/dashboard/me");
