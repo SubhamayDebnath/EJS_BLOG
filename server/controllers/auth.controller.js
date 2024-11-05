@@ -58,7 +58,8 @@ const resetPasswordPage = async (req, res, next) => {
       title: "Reset Password Page",
       description: "Welcome to Reset Password Page",
     };
-    res.render("auth/resetPassword", { locals, layout: authenticationLayout });
+    const token=req.params.slug;
+    res.render("auth/resetPassword", { locals, layout: authenticationLayout ,token});
   } catch (error) {
     console.log(`Reset Password Page error : ${error}`);
     res.redirect("/error");
@@ -92,6 +93,7 @@ const resetPasswordSendMail = async (req, res, next) => {
         "success_msg",
         `Reset password has been send to ${email} successfully`
       );
+      const token = jwt.sign({ userId: user._id }, jwtSecret);
       return res.redirect("/auth/password/forget-password");
     } catch (error) {
       user.forgotPasswordExpiry = undefined;
@@ -107,12 +109,9 @@ const resetPasswordSendMail = async (req, res, next) => {
 };
 const resetPassword = async (req, res, next) => {
   try {
-    const { resetToken } = req.params.slug;
-    const { password } = req.body;
-    const forgotPasswordToken = crypto
-      .create("sha256")
-      .update(resetToken)
-      .digest("hex");
+    const { token, password } = req.body;
+    const resetToken = token;
+    const forgotPasswordToken = crypto.create("sha256").update(resetToken).digest("hex");
     const user = await User.findOne({
       forgotPasswordToken,
       forgotPasswordExpiry: { $gt: Date.now() },

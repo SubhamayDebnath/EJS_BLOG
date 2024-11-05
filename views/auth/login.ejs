@@ -46,6 +46,12 @@
       document.querySelector('.email-error-message').innerHTML = `Email must be a valid email address.`;
       return false;
     }
+    disableSubmitButton() 
     return true;
+  }
+  function disableSubmitButton() {
+    const submitButton = document.getElementById("submit-button");
+    submitButton.disabled = true;
+    submitButton.textContent = "Submitting...";
   }
 </script>
