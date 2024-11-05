@@ -4,7 +4,7 @@ import { config } from "dotenv";
 import fs from "fs/promises";
 import crypto from "crypto";
 import cloudinary from "../utils/cloudinary.js";
-import sendEmail from '../utils/sendMail.js'
+import sendEmail from "../utils/sendMail.js";
 config();
 import User from "../models/user.model.js";
 const jwtSecret = process.env.JWT_SECRET;
@@ -40,7 +40,7 @@ const loginPage = async (req, res, next) => {
   }
 };
 
-const forgetPasswordPage=async (req,res,next)=>{
+const forgetPasswordPage = async (req, res, next) => {
   try {
     const locals = {
       title: "Forget Page",
@@ -51,8 +51,8 @@ const forgetPasswordPage=async (req,res,next)=>{
     console.log(`Forget Password Page error : ${error}`);
     res.redirect("/error");
   }
-}
-const resetPasswordPage=async (req,res,next)=>{
+};
+const resetPasswordPage = async (req, res, next) => {
   try {
     const locals = {
       title: "Reset Password Page",
@@ -63,21 +63,24 @@ const resetPasswordPage=async (req,res,next)=>{
     console.log(`Reset Password Page error : ${error}`);
     res.redirect("/error");
   }
-}
-const resetPasswordSendMail = async(req,res,next)=>{
+};
+const resetPasswordSendMail = async (req, res, next) => {
   try {
-    const {email} = req.body;
-    if(!email){
+    const { email } = req.body;
+    if (!email) {
       req.flash("error_msg", "Email is required");
       return res.redirect("/auth/password/forget-password");
     }
-    const user=await User.findOne({email:email});
-    if(!user){
+    const user = await User.findOne({ email: email });
+    if (!user) {
       req.flash("error_msg", "Please enter valid email");
       return res.redirect("/auth/password/forget-password");
     }
-    user.forgotPasswordToken=crypto.createHash("sha256").update(resetToken).digest("hex");
-    user.forgotPasswordExpiry=Date.now() + 15 * 60 * 1000;
+    user.forgotPasswordToken = crypto
+      .createHash("sha256")
+      .update(resetToken)
+      .digest("hex");
+    user.forgotPasswordExpiry = Date.now() + 15 * 60 * 1000;
     const resetToken = crypto.randomBytes(20).toString("hex");
     await user.save();
     const resetPasswordURL = `${process.env.APP_URL}/auth/password/reset-password/${resetToken}`;
@@ -85,7 +88,10 @@ const resetPasswordSendMail = async(req,res,next)=>{
     const message = `You can reset your password by clicking <a href=${resetPasswordURL} target="_blank">Reset your password</a>\nIf the above link does not work for some reason then copy paste this link in new tab ${resetPasswordURL}.\nIf you have not requested this, kindly ignore.`;
     try {
       await sendEmail(email, subject, message);
-      req.flash("success_msg", `Reset password has been send to ${email} successfully`);
+      req.flash(
+        "success_msg",
+        `Reset password has been send to ${email} successfully`
+      );
       return res.redirect("/auth/password/forget-password");
     } catch (error) {
       user.forgotPasswordExpiry = undefined;
@@ -95,11 +101,37 @@ const resetPasswordSendMail = async(req,res,next)=>{
       return res.redirect("/auth/password/forget-password");
     }
   } catch (error) {
+    console.log(`Reset Password Send Mail error : ${error}`);
+    res.redirect("/error");
+  }
+};
+const resetPassword = async (req, res, next) => {
+  try {
+    const { resetToken } = req.params.slug;
+    const { password } = req.body;
+    const forgotPasswordToken = crypto
+      .create("sha256")
+      .update(resetToken)
+      .digest("hex");
+    const user = await User.findOne({
+      forgotPasswordToken,
+      forgotPasswordExpiry: { $gt: Date.now() },
+    });
+    if (!user) {
+      req.flash("error_msg", "Invalid reset token");
+      return res.redirect("/auth/password/forget-password");
+    }
+    user.password = password;
+    user.forgotPasswordExpiry = undefined;
+    user.forgotPasswordToken = undefined;
+    await user.save();
+    req.flash("success_msg", "Reset Password successfully");
+    return res.redirect("/login");
+  } catch (error) {
     console.log(`Reset Password error : ${error}`);
     res.redirect("/error");
   }
-}
-const addNewPassword=async(req,res)
+};
 const register = async (req, res, next) => {
   try {
     const { username, email, password } = req.body;
@@ -143,7 +175,7 @@ const register = async (req, res, next) => {
       password: hashPassword,
       avatar: {
         public_id: public_id,
-        secure_url:image
+        secure_url: image,
       },
     });
     if (!user) {
@@ -187,13 +219,22 @@ const login = async (req, res, next) => {
     res.redirect("/error");
   }
 };
-const logout=async (req,res,next) => {
+const logout = async (req, res, next) => {
   try {
-    res.clearCookie('token');
+    res.clearCookie("token");
     return res.redirect("/login");
   } catch (error) {
     console.log(`Logout error : ${error}`);
     res.redirect("/error");
   }
-}
-export { registerPage, loginPage, register, login,logout,forgetPasswordPage,resetPasswordPage,resetPasswordSendMail };
+};
+export {
+  registerPage,
+  loginPage,
+  register,
+  login,
+  logout,
+  forgetPasswordPage,
+  resetPasswordPage,
+  resetPasswordSendMail,
+};
