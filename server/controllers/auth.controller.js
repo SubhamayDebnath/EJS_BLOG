@@ -37,10 +37,22 @@ const loginPage = async (req, res, next) => {
     res.redirect("/error");
   }
 };
+
+const forgetPasswordPage=async (req,res,next)=>{
+  try {
+    const locals = {
+      title: "Forget Page",
+      description: "Welcome to Forget Page",
+    };
+    res.render("auth/forgetPassword", { locals, layout: authenticationLayout });
+  } catch (error) {
+    console.log(`Forget Password error : ${error}`);
+    res.redirect("/error");
+  }
+}
 const register = async (req, res, next) => {
   try {
     const { username, email, password } = req.body;
-    console.log(req.body);
     if (!username || !email || !password) {
       req.flash("error_msg", "Please fill in all fields");
       return res.redirect("/register");
@@ -134,4 +146,4 @@ const logout=async (req,res,next) => {
     res.redirect("/error");
   }
 }
-export { registerPage, loginPage, register, login,logout };
+export { registerPage, loginPage, register, login,logout,forgetPasswordPage };

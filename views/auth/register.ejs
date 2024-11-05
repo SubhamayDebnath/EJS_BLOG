@@ -10,18 +10,16 @@
         <%= error_msg %>
       </div>
       <% } %>
-      <form action="/api/v1/register" onsubmit="validatePassword()" method="post" enctype="multipart/form-data">
-        <div class="image-container ratio ratio-16x9 rounded overflow-hidden mx-auto mb-3">
-          <img src="" alt="" id="previewImage" class="preview-image w-100 h-100 object-fit-contain">
-          <label for="avatar" id="imageLabel" class="label-image-container  rounded">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-upload-cloud">
-              <polyline points="16 16 12 12 8 16"></polyline>
-              <line x1="12" y1="12" x2="12" y2="21"></line>
-              <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path>
-            </svg>
-          </label>
+      <form action="/api/v1/register" onsubmit="validatePassword()" class="mt-5" method="post" enctype="multipart/form-data">
+        <div class="preview-container ratio ratio-16x9 rounded-circle overflow-hidden mx-auto mb-3" id="preview-container">
+          <img src="" alt="" id="previewImage" class="w-100 h-100 object-fit-cover">
         </div>
-        <input type="file" accept="image/*" name="avatar" id="avatar" class="d-none" required>
+        <div class="form-group mb-3">
+          <label for="avatar" id="imageLabel" class="form-label">
+            Upload Your Profile
+          </label>
+          <input type="file" accept="image/*" name="avatar" id="avatar" class="form-control" required>
+        </div>
         <div class="form-group mb-3">
           <label for="username" class="form-label">Username</label>
           <input type="text" name="username" class="form-control mb-1" id="username" placeholder="Enter your username" required autocomplete="off">
@@ -47,15 +45,21 @@
 <script>
     document.getElementById('avatar').addEventListener('change', function(event) {
     const file = event.target.files[0];
-    if (file) {
+    // if (file) {
+    //  
+    //   
+    //   
+    // }
+    if(file){
+      document.getElementById('preview-container').classList.add("show")
       const reader = new FileReader();
       reader.onload = function(e) {
         const img = document.getElementById('previewImage');
         img.src = e.target.result;
-        img.classList.remove('hidden');
-        document.getElementById('imageLabel').classList.add('hidden')
       }
       reader.readAsDataURL(file);
+    }else{
+      document.getElementById('preview-container').classList.remove("show")
     }
   });
   function validatePassword() {

@@ -43,6 +43,8 @@ const userSchema = new Schema(
       enum: ["ACTIVE", "INACTIVE"],
       default: "ACTIVE",
     },
+    forgotPasswordToken: String,
+    forgotPasswordExpiry: String,
   },
   {
     timestamps: true,

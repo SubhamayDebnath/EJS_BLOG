@@ -15,7 +15,7 @@
     <div class="container px-0">
         <div class="row">
             <div class="col-lg-10 col-12 mx-auto">
-                <h1 class="display-6 fw-bold text-white mb-3"><%- article.title%></h1>
+                <h1 class="display-6 fw-bold text-white mb-5"><%- article.title%></h1>
                 <div class="d-flex align-items-center justify-content-between gap-1 mb-4">
                     <div class="d-flex align-items-center gap-2">
                         <div class="author-container d-flex align-items-center justify-content-center rounded-circle overflow-hidden">
@@ -28,7 +28,7 @@
                 <div class="ratio ratio-16x9 overflow-hidden rounded mb-4">
                     <img src="<%-article.image.secure_url%>" alt="<%-article.title%>" class="w-100 h-100 object-fit-cover">
                 </div>
-                <div class="text-wrap overflow-hidden mb-5">
+                <div class="text-wrap overflow-hidden lh-base mb-5">
                     <%- article.content  %>
                 </div>
                 <div class="d-flex align-items-center gap-2 mb-4 mt-5">

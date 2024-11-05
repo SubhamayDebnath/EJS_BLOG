@@ -1,97 +1,76 @@
-@import url('https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&family=Outfit:wght@100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&family=Outfit:wght@100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap");
 
 * {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    font-family: "Plus Jakarta Sans", sans-serif;
-    scroll-behavior: smooth;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  scroll-behavior: smooth;
 }
-::-webkit-scrollbar{
-    display: none;
+::-webkit-scrollbar {
+  display: none;
 }
 h1,
 h2,
 h3,
 .heading,
 .nav-link {
-    font-family: "Outfit", sans-serif;
+  font-family: "Outfit", sans-serif;
 }
 
 .btn,
 .tag {
-    font-family: "Jost", sans-serif;
+  font-family: "Jost", sans-serif;
 }
 
 p {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
-a{
-    text-decoration: none;
-    color: inherit;
+a {
+  text-decoration: none;
+  color: inherit;
 }
 
 body {
-    font-style: normal;
-    font-weight: 400;
-    font-size: 15px;
-    line-height: 1.4;
-    background-color: #141414;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.4;
+  background-color: #141414;
 }
 .custom-alert-success,
-.custom-alert-error{
+.custom-alert-error {
   font-size: 14px;
   padding: 10px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-.custom-alert-error{
+.custom-alert-error {
   background-color: #160b0b;
   color: #f4c7c7;
 }
-.main-container{
-    min-height: 100dvh;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.main-container {
+  min-height: 100dvh;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 #particles-js {
-    width: 100% !important;
-    height: 100% !important;
-    z-index: -1;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: -1;
 }
-.auth-container{
-    background-color: #1a1a1a;
+.auth-container {
+  background-color: #1a1a1a;
 }
-.image-container {
-    max-width: 40rem;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .profile-image-container{
-    width: 150px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-  }
-  .icon.hidden{
-    display: none;
-  }
-  
-  #previewImage.hidden,
-  #imageLabel.hidden {
-    display: none;
-  }
-  .label-image-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #141414;
-    border: 1px dashed #495057;
-  }
-  
+
+.preview-container {
+  width: 135px;
+  height: 135px;
+  display: none;
+}
+.preview-container.show {
+  display: block;
+}
