@@ -84,7 +84,7 @@ const articlePage=async (req,res,next) => {
   }
 }
 /*
-  Category Page Render
+  Categories Page Render
 */ 
 const categoriesPage = async (req, res, next) => {
   try {
@@ -94,6 +94,46 @@ const categoriesPage = async (req, res, next) => {
     };
     const categories = await Category.find();
     res.render("categories", { locals,user:req.user,categories});
+  } catch (error) {
+    console.log(`Categories page error : ${error}`);
+    res.redirect("/error");
+  }
+};
+/*
+  Categories Page Render
+*/ 
+const categoryPage = async (req, res, next) => {
+  try {
+    const categoryName = req.params.slug;
+    const category = await Category.findOne({ name: categoryName });
+    let perPage = 6;
+    let page = req.query.page || 1;
+    const posts = await Post.find({ category: category._id,status: true })
+      .populate("category", "name")
+      .populate("author", "username avatar")
+      .sort({ createdAt: -1 })
+      .skip(perPage * page - perPage)
+      .limit(perPage)
+      .exec();
+    const count = await Post.countDocuments({});
+    const totalPages = Math.ceil(count / perPage);
+    const nextPage = parseInt(page) + 1;
+    const hasNextPage = nextPage <= Math.ceil(count / perPage);
+    const prevPage = page > 1 ? page - 1 : null;
+    const locals = {
+      title: "Posts in " + category.name,
+      description: "Posts in " + category.name,
+    };
+    res.render("category", {
+      locals,
+      user:req.user,
+      posts, 
+      categoryName: category.name, 
+      current: page,
+      nextPage: hasNextPage ? nextPage : null,
+      prevPage,
+      totalPages,
+    });
   } catch (error) {
     console.log(`Categories page error : ${error}`);
     res.redirect("/error");
@@ -125,4 +165,4 @@ const errorPage=async (req,res,next) => {
 }
 
 
-export { homePage, articlesPage,articlePage, contactPage, categoriesPage,errorPage};
+export { homePage, articlesPage,articlePage, contactPage, categoriesPage,categoryPage,errorPage};
