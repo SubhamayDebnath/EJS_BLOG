@@ -47,6 +47,8 @@ const loginPage = async (req, res, next) => {
     res.redirect("/error");
   }
 };
+
+
 /*
   Forget Password Using Mail Page Render
 */ 
@@ -107,7 +109,7 @@ const resetPasswordSendMail = async (req, res, next) => {
       await sendEmail(email, subject, message);
       req.flash(
         "success_msg",
-        `<p class="text-center text-warning"> Reset password has been send to ${email} successfully.Please check your email inbox and spam folder for the password reset link.</p> `
+        `<p class="text-warning"> Reset password has been send to ${email} successfully.Please check your email inbox and spam folder for the password reset link.</p> `
       );
       const token = jwt.sign({ userId: user._id }, jwtSecret);
       return res.redirect("/auth/password/forget-password");
@@ -150,13 +152,38 @@ const resetPassword = async (req, res, next) => {
     user.forgotPasswordToken = undefined;
     await user.save();
     req.flash("success_msg", "Reset Password successfully,Please login to access your account");
-
     return res.redirect("/login");
   } catch (error) {
     console.log(`Reset Password error : ${error}`);
     res.redirect("/error");
   }
 };
+/*
+  Change Password Method
+*/ 
+const changePassword=async(req,res,next)=>{
+  try {
+    const userID=req.params.id;
+    const {currentPassword,newPassword}=req.body;
+    const user=await User.findById({_id:userID});
+    if(!user){
+      req.flash("error_msg","Invalid User");
+      res.redirect('/dashboard/me/change-password')
+    }
+    if(currentPassword == newPassword){
+      req.flash("error_msg","Your new password cannot be the same as the current password.");
+      return res.redirect(`/dashboard/me/change-password`);
+    }
+    const hashPassword=await bcrypt.hash(newPassword, 10);
+    user.password=hashPassword;
+    await user.save();
+    req.flash("success_msg","Password changed successfully");
+    return res.redirect('/dashboard/me/change-password');
+  }catch(error){
+    console.log(`Change Password error : ${error}`);
+    res.redirect("/error");
+  }
+}
 /*
   User Register Method
 */ 
@@ -272,5 +299,6 @@ export {
   forgetPasswordPage,
   resetPasswordPage,
   resetPasswordSendMail,
-  resetPassword
+  resetPassword,
+  changePassword
 };

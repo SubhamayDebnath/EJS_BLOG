@@ -270,6 +270,26 @@ const updateUserPage = async (req, res, next) => {
     res.redirect("/error");
   }
 };
+/*
+  Change Password without using mail Page Render
+*/ 
+const changePasswordPage=async(req,res,next)=>{
+  try {
+    const locals = {
+      title: "Change Password",
+      description: "Welcome to Change Password",
+    };
+    res.render("admin/form/changePassword", {
+      locals,
+      layout: adminLayout,
+      user: req.user,
+    });
+    
+  } catch (error) {
+    console.log(`Change Password without mail error : ${error}`);
+    res.redirect("/error");
+  }
+}
 export {
   dashboard,
   articlesPage,
@@ -282,4 +302,5 @@ export {
   addCategoryPage,
   updateCategoryPage,
   updateUserPage,
+  changePasswordPage
 };

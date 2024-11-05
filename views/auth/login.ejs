@@ -10,6 +10,12 @@
         <%= error_msg %>
       </div>
       <% } %>
+      <% if (success_msg.length> 0) { %>
+      <div class="custom-alert-success rounded mt-2" role="alert">
+        <%= success_msg %>
+      </div>
+      <% } %>
+
       <form action="/api/v1/login" onsubmit="validatePassword()" method="post">
         <div class="form-group mb-3">
           <label for="email" class="form-label">Email</label>
@@ -46,9 +52,10 @@
       document.querySelector('.email-error-message').innerHTML = `Email must be a valid email address.`;
       return false;
     }
-    disableSubmitButton() 
+    disableSubmitButton()
     return true;
   }
+
   function disableSubmitButton() {
     const submitButton = document.getElementById("submit-button");
     submitButton.disabled = true;

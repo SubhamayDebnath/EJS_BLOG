@@ -8,7 +8,8 @@ import {
   forgetPasswordPage,
   resetPasswordPage,
   resetPasswordSendMail,
-  resetPassword
+  resetPassword,
+  changePassword
 } from "../controllers/auth.controller.js";
 import { isLoggedIn } from "../middlewares/auth.middleware.js";
 import { isAuthorized } from "../middlewares/auth.middleware.js";
@@ -22,6 +23,7 @@ router.post("/api/v1/register", upload.single("avatar"), register);
 router.post("/api/v1/login",login);
 router.post("/api/v1/reset-password",isLoggedIn, resetPasswordSendMail);
 router.post("/api/v1/change-password",isLoggedIn,resetPassword)
+router.put("/api/vi/update/password/:id",isAuthorized,changePassword);
 router.get("/logout", isAuthorized, logout);
 
 export default router;
