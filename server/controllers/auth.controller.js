@@ -64,7 +64,7 @@ const resetPasswordPage=async (req,res,next)=>{
     res.redirect("/error");
   }
 }
-const resetPassword = async(req,res,next)=>{
+const resetPasswordSendMail = async(req,res,next)=>{
   try {
     const {email} = req.body;
     if(!email){
@@ -99,6 +99,7 @@ const resetPassword = async(req,res,next)=>{
     res.redirect("/error");
   }
 }
+const addNewPassword=async(req,res)
 const register = async (req, res, next) => {
   try {
     const { username, email, password } = req.body;
@@ -195,4 +196,4 @@ const logout=async (req,res,next) => {
     res.redirect("/error");
   }
 }
-export { registerPage, loginPage, register, login,logout,forgetPasswordPage,resetPasswordPage,resetPassword };
+export { registerPage, loginPage, register, login,logout,forgetPasswordPage,resetPasswordPage,resetPasswordSendMail };

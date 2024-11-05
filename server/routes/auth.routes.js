@@ -7,7 +7,7 @@ import {
   logout,
   forgetPasswordPage,
   resetPasswordPage,
-  resetPassword,
+  resetPasswordSendMail,
 } from "../controllers/auth.controller.js";
 import { isLoggedIn } from "../middlewares/auth.middleware.js";
 import { isAuthorized } from "../middlewares/auth.middleware.js";
@@ -19,7 +19,7 @@ router.get("/auth/password/forget-password", isLoggedIn, forgetPasswordPage);
 router.get("/auth/password/reset-password/:slug", isLoggedIn, resetPasswordPage);
 router.post("/api/v1/register", upload.single("avatar"), register);
 router.post("/api/v1/login", login);
-router.post("/api/v1/reset-password", resetPassword);
+router.post("/api/v1/reset-password", resetPasswordSendMail);
 router.get("/logout", isAuthorized, logout);
 
 export default router;
