@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import slugify from 'slugify';
+import {ObjectId} from 'mongodb'
 import { config } from "dotenv";
 import fs from "fs/promises";
 config();
@@ -156,6 +157,37 @@ const addPost = async (req, res, next) => {
   }
 };
 /*
+  Add Comment Method
+*/ 
+const addComment=async(req,res,next)=>{
+  try {
+    const {postID,name,email,comment}=req.body;
+    const uniqueId = new ObjectId();
+    const postSlug = await Post.findById({_id:postID});
+    const post=await Post.findByIdAndUpdate({_id:postID},{
+      $push:{
+        comments:{
+          _id:uniqueId,
+          name:name,
+          email:email,
+          comment:comment,
+          date:Date.now()
+        }
+      }
+    })
+    if(!post){
+      req.flash("error_msg","Failed to add comment");
+      return res.redirect(`/articles/${postSlug.slug}`);
+    }
+    await post.save()
+    req.flash("success_msg","Comment added successfully");
+    return res.redirect(`/articles/${postSlug.slug}`)
+  } catch (error) {
+    console.log(`Add Comment error : ${error}`);
+    res.redirect("/error");
+  }
+}
+/*
   Update User Method
 */ 
 const updateUser = async (req, res, next) => {
@@ -208,4 +240,4 @@ const updateUser = async (req, res, next) => {
     res.redirect("/error");
   }
 };
-export { addCategory, deleteCategory, updateCategory, addPost, updateUser };
+export { addCategory, deleteCategory, updateCategory, addPost, updateUser,addComment };

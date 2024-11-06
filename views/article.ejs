@@ -73,9 +73,20 @@
                             <div class="card">
                                 <div class="card-header ">
                                     <h5 class="mt-2">Leave a comment</h5>
+                                    <% if (error_msg.length > 0) { %>
+                                        <div class="custom-alert-error rounded mt-2" role="alert" id="errorAlert">
+                                          <%= error_msg %>
+                                        </div>
+                                      <% } %>
+                                      <% if (success_msg.length > 0) { %>
+                                        <div class="custom-alert-success rounded mt-2" role="alert" id="successAlert">
+                                          <%= success_msg %>
+                                        </div>
+                                    <% } %>
                                 </div>
                                 <div class="card-body">
-                                    <form action="" method="post" id="comment-form">
+                                    <form action="/api/v1/add-comment" method="post" id="comment-form">
+                                        <input type="hidden" name="postID" id="postID" value="<%- article._id  %>" >
                                         <div class="form-group mb-3">
                                             <label for="name" class="form-label">Name</label>
                                             <input type="text" name="name" id="name" placeholder="Enter your name" required class="form-control">
@@ -130,5 +141,20 @@
             saveDetailsCheckbox.checked = false;
         })
     })
+    function hideAlert(alertId) {
+    setTimeout(function() {
+      const alertElement = document.getElementById(alertId);
+      if (alertElement) {
+        alertElement.style.display = 'none'; 
+      }
+    }, 10000);
+  }
+
+  if (document.getElementById('errorAlert')) {
+    hideAlert('errorAlert');
+  }
+  if (document.getElementById('successAlert')) {
+    hideAlert('successAlert');
+  }
 
 </script>

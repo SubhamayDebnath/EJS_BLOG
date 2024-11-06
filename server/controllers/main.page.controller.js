@@ -83,6 +83,7 @@ const articlePage=async (req,res,next) => {
     res.redirect("/error");
   }
 }
+
 /*
   Categories Page Render
 */ 
