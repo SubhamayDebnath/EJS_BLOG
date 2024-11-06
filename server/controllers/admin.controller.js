@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import slugify from 'slugify';
 import { config } from "dotenv";
 import fs from "fs/promises";
 config();
@@ -99,6 +100,11 @@ const addPost = async (req, res, next) => {
       req.flash("error_msg", "All fields are required");
       return res.redirect("/dashboard/articles/add");
     }
+    const slug = slugify(title, {lower: true,strict: true,replacement: '-', });
+    let existingPost = await Post.findOne({ slug: slug });
+    if (existingPost) {
+      slug = `${slug}-${Date.now()}`;
+    }
     const decoded = jwt.verify(req.cookies.token, jwtSecret);
     let image = "";
     let public_id = "";
@@ -135,6 +141,7 @@ const addPost = async (req, res, next) => {
       tags: tags.split(","),
       status: status === "true",
       author: decoded.userId,
+      slug:slug
     });
     if (!post) {
       req.flash("error_msg", "Failed to create post");

@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get("/",isAuthenticated, homePage);
 router.get('/articles',isAuthenticated,articlesPage);
-router.get('/article/:id',isAuthenticated,articlePage);
+router.get('/article/:slug',isAuthenticated,articlePage);
 router.get('/categories', isAuthenticated,categoriesPage)
 router.get('/category/:slug',isAuthenticated,categoryPage)
 router.get('/contact',isAuthenticated,contactPage);

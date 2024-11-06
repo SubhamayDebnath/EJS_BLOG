@@ -65,11 +65,11 @@ const articlesPage = async (req, res, next) => {
 */ 
 const articlePage=async (req,res,next) => {
   try {
-    const articleID=req.params.id;
-    if(!articleID){
+    const articleSlug=req.params.slug;
+    if(!articleSlug){
       return res.redirect("/error");
     }
-    const article =  await Post.findById(articleID).populate("category", "name").populate('author','username avatar');
+    const article =  await Post.findOne({slug:articleSlug}).populate("category", "name").populate('author','username avatar');
     if(!article){
       return res.redirect("/error");
     }

@@ -39,6 +39,10 @@ const postSchema = new Schema(
       ref: 'User',
       required: [true, "Post Author is required"],
     },
+    slug:{
+      type:String,
+      required: [true, "Slug is required"],
+    }
   },
   {
     timestamps: true,
