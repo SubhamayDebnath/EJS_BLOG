@@ -1,0 +1,71 @@
+<div class="container px-0">
+<% if(post.length) {%>
+    <div class="accordion" id="accordionExample">
+        <% post.forEach((data,index)=>{ %>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<%-index+1%>" aria-expanded="false" aria-controls="collapse<%-index+1%>">
+                    <div class="d-flex align-items-center flex-wrap gap-3">
+                        <span>
+                            <%- index + 1 %>
+                        </span>
+                        <div class="img-thumbnail-container rounded">
+                            <img src="<%- data.image.secure_url  %>" alt="<%- data.title  %>" class="w-100 h-100 object-fit-cover">
+                        </div>
+                        <div style="width: 220px;">
+                            <p><%- data.title.slice(0, 40) + '...' %></p>
+                        </div>/
+                        <span class="text-capitalize"> 
+                            <%- data.category.name  %>
+                        </span>/
+                        <% if ( data.author.username){%>
+                        <span><%- data.author.username  %></span> /
+                        <% } %>
+                        <span>
+                            <%= new Date(data.createdAt).toDateString() %>
+                        </span>/
+                        <span>Comments: <%= data.comments.length  %></span>
+                    </div>
+                  </button>
+                </h2>
+                <div id="collapse<%-index+1%>" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+                    <div class="d-flex flex-column gap-2">
+                        <% if( data.comments.length){  data.comments=data.comments.reverse() %>
+                            <% data.comments.forEach((com,index)=>{%>
+                                <div>
+                                    <div class="d-flex align-items-center flex-wrap gap-3">
+                                        <span>
+                                            <%- index +1  %>
+                                        </span>
+                                        -
+                                        <span>
+                                            <%-com.name  %>
+                                        </span>
+                                        -
+                                        <span>
+                                            "
+                                            <%- com.comment  %>
+
+                                            "
+                                        </span>
+                                        -
+                                        <span>
+                                            <%= new Date(com.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %>
+                                        </span>
+                                        -
+                                        <a href="/article/<%- data.slug  %>#<%-com._id%>" target="_blank" class="btn btn-primary btn-sm">View </a>
+                                    </div>
+                                </div>
+                            <%}) %>
+                        <% } %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        <% }) %>
+      </div>
+<% }else{ %>
+    <h5>No Comments!</h5>
+<% } %>
+</div>

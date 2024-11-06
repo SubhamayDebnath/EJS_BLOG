@@ -46,7 +46,7 @@
             <% article.comments.forEach((data)=>{  %>
             <div class="commant-container">
                 <div class="comment-block">
-                    <div class="user-comment-container p-2 rounded mb-2">
+                    <div class="user-comment-container p-2 rounded mb-2" id="<%- data._id  %>">
                         <div class=" d-flex align-items-center gap-2 mb-2">
                             <h6 class="text-white m-0 p-0"><%- data.name %></h6>
                             <span class="m-0 p-0" style="font-size: 14px;"><%= new Date(data.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></span>

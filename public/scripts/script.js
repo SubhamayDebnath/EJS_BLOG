@@ -11,11 +11,3 @@ const toggleNavbar = function () {
   menuBtn.classList.toggle("active");
   document.querySelector("body").classList.toggle("overflow-hidden");
 };
-addEventOnElements(navTogglers, "click", toggleNavbar);
-window.onscroll = function () {
-  if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
-    header.classList.add("color");
-  } else {
-    header.classList.remove("color");
-  }
-};

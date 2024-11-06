@@ -168,6 +168,33 @@ const postByUserPage = async (req, res, next) => {
     res.redirect("/error");
   }
 };
+/*
+  Comments Page Render
+*/ 
+const commentPage=async(req,res,next)=>{
+  try {
+    const locals = {
+      title: "All Comments",
+      description: "Welcome to All Comments",
+    };
+    const userRole=req.user.role
+    let post;
+    if(userRole=='ADMIN' || userRole=='SUPERUSER'){
+      post= await  Post.find().populate("comments").populate("category", "name").populate("author", "username role").sort({createdAt:1})
+    }else{
+      post= await  Post.find({author: req.user._id}).populate("comments").populate("category", "name").sort({createdAt:1})
+    }
+    res.render("admin/comments", {
+      locals,
+      layout: adminLayout,
+      user: req.user,
+      post
+    });
+  } catch (error) {
+    console.log(`Comment page error : ${error}`);
+    res.redirect("/error");
+  }
+}
 
 /*
   Add Post Page Render
@@ -302,5 +329,6 @@ export {
   addCategoryPage,
   updateCategoryPage,
   updateUserPage,
-  changePasswordPage
+  changePasswordPage,
+  commentPage
 };

@@ -28,7 +28,7 @@ a {
   color: inherit;
 }
 main{
-  min-height: calc(100dvh - 187px) !important;
+  min-height: calc(100dvh - 236px) !important;
   height: 100%;
 }
 .custom-alert-success,
@@ -67,11 +67,9 @@ body {
   left: 0;
   right: 0;
   z-index: 99999;
-}
-
-.header.color {
   background-color: #141414;
 }
+
 
 .menu-btn {
   height: 2rem;
