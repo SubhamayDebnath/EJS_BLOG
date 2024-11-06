@@ -75,7 +75,7 @@
                                     <h5 class="mt-2">Leave a comment</h5>
                                 </div>
                                 <div class="card-body">
-                                    <form action="">
+                                    <form action="" method="post" id="comment-form">
                                         <div class="form-group mb-3">
                                             <label for="name" class="form-label">Name</label>
                                             <input type="text" name="name" id="name" placeholder="Enter your name" required class="form-control">
@@ -89,7 +89,7 @@
                                             <textarea name="comment" id="comment" rows="6" class="form-control" placeholder="Comment..." required></textarea>
                                         </div>
                                         <div class="form-group mb-3">
-                                            <input type="checkbox" name="save" id="save">
+                                            <input type="checkbox" name="saveDetails" id="saveDetails">
                                             <label for="save" class="form-label">Save my name and email in this browser for the next time I comment.</label>
                                         </div>
                                         <button class="btn-primary btn w-100">Comment</button>
@@ -103,3 +103,32 @@
         </div>
     </div>
 </section>
+
+<script>
+    document.addEventListener("DOMContentLoaded",()=> {
+        const savedUserData = localStorage.getItem("userData");
+        const form = document.getElementById("comment-form");
+        const nameInput = document.getElementById("name");
+        const emailInput = document.getElementById("email");
+        const saveDetailsCheckbox = document.getElementById("saveDetails");
+        if (savedUserData) {
+            const userData = JSON.parse(savedUserData);
+            nameInput.value = userData.name;
+            emailInput.value = userData.email;
+            saveDetailsCheckbox.checked = true; 
+        }
+        form.addEventListener('submit',()=>{
+            const name = nameInput.value;
+            const email = emailInput.value;
+            const saveDetails = saveDetailsCheckbox.checked;
+            if (saveDetails) {
+                const userData = { name, email };
+                localStorage.setItem("userData", JSON.stringify(userData));
+            } else {
+                localStorage.removeItem("userData");
+            }
+            saveDetailsCheckbox.checked = false;
+        })
+    })
+
+</script>
