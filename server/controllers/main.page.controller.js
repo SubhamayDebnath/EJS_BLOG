@@ -67,11 +67,11 @@ const articlePage=async (req,res,next) => {
   try {
     const articleSlug=req.params.slug;
     if(!articleSlug){
-      return res.redirect("/error");
+      return res.redirect("/articles");
     }
     const article =  await Post.findOne({slug:articleSlug}).populate("category", "name").populate('author','username avatar');
     if(!article){
-      return res.redirect("/error");
+      return res.redirect("/articles");
     }
     const locals = {
       title: article.title,
