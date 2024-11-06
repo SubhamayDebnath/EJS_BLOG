@@ -50,6 +50,10 @@ body {
   background-color: #160b0b;
   color: #f4c7c7;
 }
+.custom-alert-success {
+  background-color: #0c130d;
+  color: #cce8cd;
+}
 .main-container {
   min-height: 100dvh;
   height: 100%;

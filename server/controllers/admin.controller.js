@@ -177,11 +177,10 @@ const addComment=async(req,res,next)=>{
     })
     if(!post){
       req.flash("error_msg","Failed to add comment");
-      return res.redirect(`/articles/${postSlug.slug}`);
+      return res.redirect(`/article/${postSlug.slug}`);
     }
-    await post.save()
     req.flash("success_msg","Comment added successfully");
-    return res.redirect(`/articles/${postSlug.slug}`)
+    return res.redirect(`/article/${postSlug.slug}`)
   } catch (error) {
     console.log(`Add Comment error : ${error}`);
     res.redirect("/error");
