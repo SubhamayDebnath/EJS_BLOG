@@ -328,12 +328,12 @@ const doReplyPage=async (req,res,next) => {
       title: "Do Replay",
       description: "Welcome to Do Reply",
     };
-    const commentID=req.params.id;
+    const {postID,commentID}=req.params;
     res.render("admin/form/reply", {
       locals,
       layout: adminLayout,
       user: req.user,
-      commentID
+      commentID,postID
     });
   } catch (error) {
     console.log(`Do Reply error : ${error}`);

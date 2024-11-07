@@ -54,6 +54,11 @@
                         <p class="pb-2 mb-0"><%- data.comment %></p>
                     </div>
                 </div>
+                <% if(data.replies) { %>
+                  <% data.replies.forEach((reply)=>{%>
+                    <%- reply.reply %>
+                  <%})  %>
+                <% } %>
             </div>
             <% }) %>
           </section>

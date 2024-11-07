@@ -18,6 +18,7 @@
                 <div class="card-body">
                     <form action="/api/v1/add-reply" method="post">
                        <div class="form-group mb-3">
+                        <input type="hidden" name="postID" id="postID" value="<%- postID  %>">
                         <input type="hidden" name="commentID" id="commentID" value="<%- commentID %>">
                         <label for="reply" class="form-label">Reply</label>
                         <textarea name="reply" id="reply" placeholder="Enter your reply message" class="form-control" required ></textarea>

@@ -191,14 +191,32 @@ const addComment=async(req,res,next)=>{
 */ 
 const doReplay=async(req,res,next)=>{
   try {
-    const {commentID,reply}=req.body;
-    const uniqueId = new ObjectId();
-    if(!commentID || !reply){
+    const {postID,commentID,reply}=req.body;
+    if(!postID || !commentID || !reply){
       req.flash("error_msg", "Please fill in all fields");
       return res.redirect(`/dashboard/comments`);
     }
-    const post = await Post.findOne({ 'comments._id': commentID });
-    console.log(post);
+    const uniqueId = new ObjectId();
+    const currentUser=req.user;
+    const post = await Post.updateOne({
+      "_id":new ObjectId(postID),
+      "comments._id":new ObjectId(commentID)
+    },{
+      $push:{
+        "comments.$.replies":{
+          _id:uniqueId,
+          reply:reply,
+          user:currentUser._id,
+          username:currentUser.username
+        }
+      }
+    });
+    if(!post){
+      req.flash("error_msg","Failed to add reply");
+      return res.redirect(`/dashboard/comment/${postID}/reply/${commentID}`);
+    }
+    req.flash("success_msg","Reply added successfully");
+    return res.redirect(`/dashboard/comment/${postID}/reply/${commentID}`);
     
   } catch (error) {
     console.log(`Reply error : ${error}`);

@@ -30,5 +30,5 @@ router.get("/category/add",isAuthorized,addCategoryPage)
 router.get("/category/update/:id",isAuthorized,updateCategoryPage)
 router.get("/me/update/:id",isAuthorized,updateUserPage)
 router.get("/me/change-password",isAuthorized,changePasswordPage)
-router.get("/comment/reply/:id",isAuthorized,doReplyPage);
+router.get("/comment/:postID/reply/:commentID",isAuthorized,doReplyPage);
 export default router;
