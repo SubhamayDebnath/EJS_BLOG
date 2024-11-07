@@ -78,6 +78,7 @@ const categoriesPage = async (req, res, next) => {
     res.redirect("/error");
   }
 };
+
 /*
   Users Page Render
 */ 
@@ -317,6 +318,28 @@ const changePasswordPage=async(req,res,next)=>{
     res.redirect("/error");
   }
 }
+/*
+  reply form page render
+*/ 
+
+const doReplyPage=async (req,res,next) => {
+  try {
+    const locals = {
+      title: "Do Replay",
+      description: "Welcome to Do Reply",
+    };
+    const commentID=req.params.id;
+    res.render("admin/form/reply", {
+      locals,
+      layout: adminLayout,
+      user: req.user,
+      commentID
+    });
+  } catch (error) {
+    console.log(`Do Reply error : ${error}`);
+    res.redirect("/error");
+  }
+}
 export {
   dashboard,
   articlesPage,
@@ -330,5 +353,6 @@ export {
   updateCategoryPage,
   updateUserPage,
   changePasswordPage,
-  commentPage
+  commentPage,
+  doReplyPage
 };

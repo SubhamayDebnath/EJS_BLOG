@@ -17,7 +17,9 @@ h3,
 .nav-link {
   font-family: "Outfit", sans-serif;
 }
-
+.card,.card-header{
+  background-color: #141414 !important;
+}
 .btn,
 .tag {
   font-family: "Jost", sans-serif;
