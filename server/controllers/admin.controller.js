@@ -207,7 +207,8 @@ const doReplay=async(req,res,next)=>{
           _id:uniqueId,
           reply:reply,
           user:currentUser._id,
-          username:currentUser.username
+          username:currentUser.username,
+          date:Date.now()
         }
       }
     });
