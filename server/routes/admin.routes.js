@@ -1,5 +1,5 @@
 import express from "express";
-import {addCategory,deleteCategory,updateCategory,addPost,updateUser,addComment} from '../controllers/admin.controller.js'
+import {addCategory,deleteCategory,updateCategory,addPost,updateUser,addComment,doReplay} from '../controllers/admin.controller.js'
 import {isAuthorized} from '../middlewares/auth.middleware.js'
 import  upload  from '../middlewares/multer.middleware.js'
 const router = express.Router();
@@ -9,5 +9,6 @@ router.put("/category/update/:id",isAuthorized,updateCategory)
 router.post("/post/add",isAuthorized,upload.single('avatar'),addPost)
 router.put("/user/update/:id",isAuthorized,upload.single('avatar'),updateUser)
 router.post("/add-comment",addComment)
+router.post("/add-reply",isAuthorized,doReplay)
 
 export default router;

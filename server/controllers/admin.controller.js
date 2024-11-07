@@ -187,6 +187,25 @@ const addComment=async(req,res,next)=>{
   }
 }
 /*
+  Reply Method
+*/ 
+const doReplay=async(req,res,next)=>{
+  try {
+    const {commentID,reply}=req.body;
+    const uniqueId = new ObjectId();
+    if(!commentID || !reply){
+      req.flash("error_msg", "Please fill in all fields");
+      return res.redirect(`/dashboard/comments`);
+    }
+    const post = await Post.findOne({ 'comments._id': commentID });
+    console.log(post);
+    
+  } catch (error) {
+    console.log(`Reply error : ${error}`);
+    res.redirect("/error");
+  }
+}
+/*
   Update User Method
 */ 
 const updateUser = async (req, res, next) => {
@@ -239,4 +258,5 @@ const updateUser = async (req, res, next) => {
     res.redirect("/error");
   }
 };
-export { addCategory, deleteCategory, updateCategory, addPost, updateUser,addComment };
+
+export { addCategory, deleteCategory, updateCategory, addPost, updateUser,addComment ,doReplay,};
