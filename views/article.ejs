@@ -46,7 +46,7 @@
             <% article.comments.forEach((data)=>{  %>
             <div class="commant-container">
                 <div class="comment-block">
-                    <div class="user-comment-container p-2 rounded mb-2" id="<%- data._id  %>">
+                    <div class="user-comment-container p-3 rounded mb-2" id="<%- data._id  %>">
                         <div class=" d-flex align-items-center gap-2 mb-2">
                             <h6 class="text-white m-0 p-0"><%- data.name %></h6>
                             <span class="m-0 p-0" style="font-size: 14px;"><%= new Date(data.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></span>
@@ -55,9 +55,20 @@
                     </div>
                 </div>
                 <% if(data.replies) { %>
-                  <% data.replies.forEach((reply)=>{%>
-                    <%- reply.reply %>
-                  <%})  %>
+                  <div class="ms-4 ms-md-5 mb-4">
+                    <% data.replies.forEach((reply)=>{%>
+                      <div class="reply-container p-3 rounded">
+                       <div class="d-flex align-items-center gap-2 mb-2">
+                         <h6 class="text-white m-0 p-0">
+                           <%- reply.username  %>
+                         </h6>
+                         <span class="m-0 p-0" style="font-size: 14px;"><%= new Date(reply.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %>
+                         </span>
+                       </div>
+                       <p class="pb-2 mb-0"><%-reply.reply %></p>
+                      </div>
+                    <%})  %>
+                  </div>
                 <% } %>
             </div>
             <% }) %>
