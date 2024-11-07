@@ -111,7 +111,6 @@ const resetPasswordSendMail = async (req, res, next) => {
         "success_msg",
         `<p class="text-warning"> Reset password has been send to ${email} successfully.Please check your email inbox and spam folder for the password reset link.</p> `
       );
-      const token = jwt.sign({ userId: user._id }, jwtSecret);
       return res.redirect("/auth/password/forget-password");
     } catch (error) {
       user.forgotPasswordExpiry = undefined;

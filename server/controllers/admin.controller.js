@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
-import slugify from 'slugify';
-import {ObjectId} from 'mongodb'
+import slugify from "slugify";
+import { ObjectId } from "mongodb";
 import { config } from "dotenv";
 import fs from "fs/promises";
 config();
@@ -9,12 +9,13 @@ import cloudinary from "../utils/cloudinary.js";
 import Category from "../models/category.model.js";
 import Post from "../models/post.model.js";
 import User from "../models/user.model.js";
+import sendEmail from "../utils/sendMail.js";
 
 const jwtSecret = process.env.JWT_SECRET;
 
 /*
   Add Category Method
-*/ 
+*/
 const addCategory = async (req, res, next) => {
   try {
     const { name } = req.body;
@@ -42,7 +43,7 @@ const addCategory = async (req, res, next) => {
 };
 /*
   Delete Category Method
-*/ 
+*/
 const deleteCategory = async (req, res, next) => {
   try {
     const catID = req.params.id;
@@ -64,7 +65,7 @@ const deleteCategory = async (req, res, next) => {
 };
 /*
   Update Category Method
-*/ 
+*/
 const updateCategory = async (req, res, next) => {
   try {
     const catId = req.params.id;
@@ -93,7 +94,7 @@ const updateCategory = async (req, res, next) => {
 };
 /*
   Add Post Method
-*/ 
+*/
 const addPost = async (req, res, next) => {
   try {
     const { title, postBody, tags, category, status } = req.body;
@@ -101,7 +102,11 @@ const addPost = async (req, res, next) => {
       req.flash("error_msg", "All fields are required");
       return res.redirect("/dashboard/articles/add");
     }
-    const slug = slugify(title, {lower: true,strict: true,replacement: '-', });
+    const slug = slugify(title, {
+      lower: true,
+      strict: true,
+      replacement: "-",
+    });
     let existingPost = await Post.findOne({ slug: slug });
     if (existingPost) {
       slug = `${slug}-${Date.now()}`;
@@ -142,7 +147,7 @@ const addPost = async (req, res, next) => {
       tags: tags.split(","),
       status: status === "true",
       author: decoded.userId,
-      slug:slug
+      slug: slug,
     });
     if (!post) {
       req.flash("error_msg", "Failed to create post");
@@ -158,75 +163,97 @@ const addPost = async (req, res, next) => {
 };
 /*
   Add Comment Method
-*/ 
-const addComment=async(req,res,next)=>{
+*/
+const addComment = async (req, res, next) => {
   try {
-    const {postID,name,email,comment}=req.body;
+    const { postID, name, email, comment } = req.body;
     const uniqueId = new ObjectId();
-    const postSlug = await Post.findById({_id:postID});
-    const post=await Post.findByIdAndUpdate({_id:postID},{
-      $push:{
-        comments:{
-          _id:uniqueId,
-          name:name,
-          email:email,
-          comment:comment,
-          date:Date.now()
-        }
+    const postSlug = await Post.findById({ _id: postID }).populate(
+      "author",
+      "email"
+    );
+    const post = await Post.findByIdAndUpdate(
+      { _id: postID },
+      {
+        $push: {
+          comments: {
+            _id: uniqueId,
+            name: name,
+            email: email,
+            comment: comment,
+            date: Date.now(),
+          },
+        },
       }
-    })
-    if(!post){
-      req.flash("error_msg","Failed to add comment");
+    );
+    if (!post) {
+      req.flash("error_msg", "Failed to add comment");
       return res.redirect(`/article/${postSlug.slug}`);
     }
-    req.flash("success_msg","Comment added successfully");
-    return res.redirect(`/article/${postSlug.slug}`)
+    const latestComment = post.comments[post.comments.length - 1];
+    const commentId = latestComment._id;
+    const authorEmail = postSlug.author.email;
+    const commentURL = `${process.env.APP_URL}/article/${postSlug.slug}#${commentId}`;
+    const subject = `New Comment on Your Blog Post: "${postSlug.title}"`;
+    const message = `Hi there,\n\nYou have received a new comment on your blog post "${postSlug.title}".\n\nComment by: ${name}\n\n"${comment}"\n\nCheck out the full comment in the dashboard.\n\nBest regards,\nYour Blog Team \n\n.<a href=${commentURL} target="_blank">Click here to see</a>`;
+    await sendEmail(authorEmail, subject, message);
+    req.flash("success_msg", "Comment added successfully");
+    return res.redirect(`/article/${postSlug.slug}`);
   } catch (error) {
     console.log(`Add Comment error : ${error}`);
     res.redirect("/error");
   }
-}
+};
 /*
   Reply Method
-*/ 
-const doReplay=async(req,res,next)=>{
+*/
+const doReplay = async (req, res, next) => {
   try {
-    const {postID,commentID,reply}=req.body;
-    if(!postID || !commentID || !reply){
+    const { postID, commentID, reply } = req.body;
+    if (!postID || !commentID || !reply) {
       req.flash("error_msg", "Please fill in all fields");
       return res.redirect(`/dashboard/comments`);
     }
     const uniqueId = new ObjectId();
-    const currentUser=req.user;
-    const post = await Post.updateOne({
-      "_id":new ObjectId(postID),
-      "comments._id":new ObjectId(commentID)
-    },{
-      $push:{
-        "comments.$.replies":{
-          _id:uniqueId,
-          reply:reply,
-          user:currentUser._id,
-          username:currentUser.username,
-          date:Date.now()
-        }
+    const currentUser = req.user;
+    const post = await Post.updateOne(
+      {
+        _id: new ObjectId(postID),
+        "comments._id": new ObjectId(commentID),
+      },
+      {
+        $push: {
+          "comments.$.replies": {
+            _id: uniqueId,
+            reply: reply,
+            user: currentUser._id,
+            username: currentUser.username,
+            date: Date.now(),
+          },
+        },
       }
-    });
-    if(!post){
-      req.flash("error_msg","Failed to add reply");
+    );
+    if (!post) {
+      req.flash("error_msg", "Failed to add reply");
       return res.redirect(`/dashboard/comment/${postID}/reply/${commentID}`);
     }
-    req.flash("success_msg","Reply added successfully");
+    const postSlug = await Post.findById({ _id: new ObjectId(postID) });
+    const latestComment = postSlug.comments[postSlug.comments.length - 1];
+    const commentId = latestComment._id;
+    const commentURL = `${process.env.APP_URL}/article/${postSlug.slug}#${commentId}`;
+    const subject = `Your Comment Was Replied To`;
+    const message = `Hello,\n\nthere was a new reply to your comment on the post titled: "${postSlug.title}".\n\nReply:${reply}\n\n.You can view the reply at:<a href=${commentURL} target="_blank">Click here to see.</a> `;
+    await sendEmail(currentUser.email, subject, message);
+    req.flash("success_msg", "Reply added successfully");
     return res.redirect(`/dashboard/comment/${postID}/reply/${commentID}`);
-    
   } catch (error) {
     console.log(`Reply error : ${error}`);
     res.redirect("/error");
   }
-}
+};
 /*
   Update User Method
-*/ 
+*/
 const updateUser = async (req, res, next) => {
   try {
     const userID = req.params.id;
@@ -278,4 +305,12 @@ const updateUser = async (req, res, next) => {
   }
 };
 
-export { addCategory, deleteCategory, updateCategory, addPost, updateUser,addComment ,doReplay,};
+export {
+  addCategory,
+  deleteCategory,
+  updateCategory,
+  addPost,
+  updateUser,
+  addComment,
+  doReplay,
+};
