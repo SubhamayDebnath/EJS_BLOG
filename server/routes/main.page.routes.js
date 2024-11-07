@@ -10,6 +10,6 @@ router.get('/categories', isAuthenticated,categoriesPage)
 router.get('/category/:slug',isAuthenticated,categoryPage)
 router.get('/contact',isAuthenticated,contactPage);
 router.get('/error',errorPage)
-// router.get('/posts',allPostPage);
+
 
 export default router;
