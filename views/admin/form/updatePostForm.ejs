@@ -1,0 +1,95 @@
+<div class="container px-0">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h4>Add Articles</h4>
+          <% if (error_msg.length> 0) { %>
+          <div class="custom-alert-error rounded mt-2" role="alert">
+            <%= error_msg %>
+          </div>
+          <% } %>
+          <% if (success_msg.length> 0) { %>
+          <div class="custom-alert-success rounded mt-2" role="alert">
+            <%= success_msg %>
+          </div>
+          <% } %>
+        </div>
+        <div class="card-body">
+          <form action="/api/v1/post/update/<%-post._id %>?_method=PUT" id="postForm" method="post" enctype="multipart/form-data" onsubmit="disableSubmitButton()">
+            <div class="image-container ratio ratio-16x9 rounded overflow-hidden mx-auto mb-3">
+              <img src="" alt="preview-image" id="previewImage" class="preview-image w-100 h-100 object-fit-cover ">
+              <label for="avatar" id="imageLabel" class="label-image-container rounded">
+                <% if(post.image.secure_url) { %>
+                    <img src="<%-post.image.secure_url %>" alt="preview-image" class="w-100 h-100 object-fit-cover ">
+                <% }else{ %>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-upload-cloud">
+                  <polyline points="16 16 12 12 8 16"></polyline>
+                  <line x1="12" y1="12" x2="12" y2="21"></line>
+                  <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path>
+                </svg>
+                <% } %>
+              </label>
+            </div>
+            <input type="file" class="form-control d-none" name="avatar" id="avatar">
+            <div class="form-group mb-3">
+              <label for="title" class="form-label">Article Title</label>
+              <textarea name="title" id="title" placeholder="Enter your title" class="form-control" required><%- post.title%></textarea>
+            </div>
+            <div class="form-group mb-3">
+              <label for="content" class="form-label" >Article Content</label>
+              <div name="postBody" class="w-100" id="postBody" value="<%- post.content  %>"></div>
+            </div>
+            <div class="form-group mb-3">
+              <label for="tags" class="form-label">Tags (comma-separated)</label>
+              <input type="text" name="tags" id="tags" value="<%- post.tags%>" class="form-control" placeholder="Eg.Tech, Space" required>
+            </div>
+            <div class="d-flex align-items-center gap-5 mb-3">
+              <div class="form-group">
+                <label for="category" class="form-label">Category</label>
+                <select class="form-select" name="category" id="category" required>
+                  <% if(categories.length){ %>
+                  <% categories.forEach((data)=>{%>
+                  <option value="<%=data.id%>" <% if(post.category){ %>selected<% } %> class="text-capitalize"><%-data.name%></option>
+                  <% }) %>
+                  <% } %>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="status" class="form-label">Status</label>
+                <select class="form-select" name="status" id="status" required>
+                  <option value="true" <%- post.status == true ? 'selected' : '' %>>Publish</option>
+                  <option value="false" <%- post.status == false ? 'selected' : '' %>>Draft</option>
+                </select>
+              </div>
+            </div>
+            <button class="btn btn-primary w-100" id="submit-button" type="submit">Add Post</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="/tinymce/tinymce.min.js"></script>
+<script src="/scripts/text-editor.js"></script>
+<script>
+  document.getElementById('avatar').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const img = document.getElementById('previewImage');
+                    img.src = e.target.result;
+                    img.classList.remove('hidden'); 
+                    document.getElementById('imageLabel').classList.add('hidden')
+                }
+                reader.readAsDataURL(file);
+            }
+    });
+
+  function disableSubmitButton() {
+    const submitButton = document.getElementById("submit-button");
+    submitButton.disabled = true;
+    submitButton.textContent = "Submitting...";
+  }
+</script>

@@ -219,7 +219,39 @@ const addPostPage = async (req, res, next) => {
     res.redirect("/error");
   }
 };
-
+/*
+  Update Post Page Render
+*/ 
+const updatePostPage=async(req,res,next)=>{
+  try {
+    const postID=req.params.id;
+    if(!postID){
+      req.flash("error_msg","Invalid post ID");
+      return res.redirect("/dashboard/articles");
+    }
+    const post=await Post.findById({_id:postID});
+    if(!post){
+      req.flash("error_msg","Invalid post ID");
+      return res.redirect("/dashboard/articles");
+    }
+    const locals = {
+      title: "Update Post Form",
+      description: "Welcome to update Post Form",
+    };
+    const categories = await Category.find();
+    res.render("admin/form/updatePostForm", {
+      locals,
+      layout: adminLayout,
+      user: req.user,
+      categories,
+      post
+    });
+    
+  } catch (error) {
+    console.log(`Update Post error : ${error}`);
+    res.redirect("/error");
+  }
+}
 /*
   Add Category Page Render
 */ 
@@ -354,5 +386,6 @@ export {
   updateUserPage,
   changePasswordPage,
   commentPage,
-  doReplyPage
+  doReplyPage,
+  updatePostPage
 };

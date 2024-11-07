@@ -7,6 +7,18 @@
             <h5 class="mb-0"><span><i class="bi bi-table me-2"></i></span>Articles</h5>
             <a href="/dashboard/articles/add" class="btn btn-primary btn-sm">Add Articles</a>
           </div>
+          <% if (error_msg.length> 0) { %>
+            <div class="custom-alert-error alert alert-dismissible  rounded mt-2" role="alert">
+              <%= error_msg %>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <% } %>
+            <% if (success_msg.length> 0) { %>
+            <div class="custom-alert-success alert alert-dismissible rounded mt-3" role="alert">
+              <%= success_msg %>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          <% } %>
         </div>
         <div class="card-body">
           <div class="table-responsive">
@@ -63,12 +75,10 @@
                     <%- data.author.role %>
                   </td>
                   <td>
-                    <form action="" style="width: 100px;">
-                      <select name="status" id="status" class="form-select form-select-sm">
-                        <option value="publish" class="text-capitalize" <%-
-                                                            data.status===true ? 'selected' :'' %>>Publish</option>
-                        <option value="draft" class="text-capitalize" <%-
-                                                            data.status===false ? 'selected' :'' %>>Draft</option>
+                    <form action="/api/v1/status/change/<%-data._id %>" method="post" id="status-form" style="width: 100px;">
+                      <select name="status" id="status" class="form-select form-select-sm" onchange="confirmStatusChange()">
+                        <option value="true" class="text-capitalize" <%- data.status===true ? 'selected' :'' %>>Publish</option>
+                        <option value="false" class="text-capitalize" <%-data.status===false ? 'selected' :'' %>>Draft</option>
                       </select>
                     </form>
                   </td>
@@ -82,21 +92,23 @@
                         </svg>
                         View
                       </a>
-                      <a href="" class="btn btn-primary btn-sm d-flex align-items-center gap-1">
+                      <a href="/dashboard/articles/update/<%-data._id %>" class="btn btn-primary btn-sm d-flex align-items-center gap-1">
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2">
                           <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
                           </path>
                         </svg>
                         Edit
                       </a>
-                      <a href="" class="btn btn-danger btn-sm d-flex align-items-center gap-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash">
-                          <polyline points="3 6 5 6 21 6"></polyline>
-                          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                          </path>
-                        </svg>
-                        Delete
-                      </a>
+                      <form action="/api/v1/post/delete/<%-data._id %>?_method=DELETE" method="post" id="deleteForm" onsubmit="confirmDelete()">
+                        <button type="submit" class="btn btn-danger btn-sm d-flex align-items-center gap-1">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                            </path>
+                          </svg>
+                          Delete
+                        </button>
+                      </form>
                     </div>
                   </td>
                 </tr>
@@ -117,3 +129,15 @@
     </div>
   </div>
 </div>
+<script>
+    function confirmStatusChange() {
+    const form = document.getElementById('status-form');
+    const userConfirmed = confirm("Are you sure you want to change the status?");
+    if (userConfirmed) {
+      form.submit(); 
+    } 
+  }
+  function confirmDelete() {
+    return confirm("Are you sure you want to delete this post?");
+  }
+</script>

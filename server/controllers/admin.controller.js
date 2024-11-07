@@ -162,6 +162,27 @@ const addPost = async (req, res, next) => {
   }
 };
 /*
+  Change Post Status Method
+*/
+const changePostStatus=async(req,res,next)=>{
+  try {
+    const postID=req.params.id;
+    const {status}=req.body;
+    const post=await Post.findById({_id:postID});
+    if(!post){
+      req.flash("error_msg","Post not found");
+      return res.redirect("/dashboard/articles");
+    }
+    post.status=status==="true";  
+    await post.save();
+    req.flash("success_msg","Post status updated");
+    return res.redirect("/dashboard/articles");
+  } catch (error) {
+    console.log(`Post Status error : ${error}`);
+    res.redirect("/error");
+  }
+}
+/*
   Add Comment Method
 */
 const addComment = async (req, res, next) => {
@@ -251,6 +272,104 @@ const doReplay = async (req, res, next) => {
     res.redirect("/error");
   }
 };
+
+/*
+  Update Post method
+*/
+const updatePost=async (req,res,next) => {
+  try {
+    const postId  = req.params.id; 
+    console.log(req.body);
+    const { title, postBody, tags, category, status } = req.body;
+    if (!title || !postBody || !tags || !category || !status) {
+      req.flash("error_msg", "All fields are required");
+      return res.redirect(`/dashboard/articles/update/${postId}`);
+    }
+    const post = await Post.findById({_id:postId});
+    if (!post) {
+      req.flash("error_msg", "Post not found");
+      return res.redirect("/dashboard/articles");
+    }
+    let slug = post.slug;
+    if (title !== post.title) {
+        slug = slugify(title, {
+          lower: true,
+          strict: true,
+          replacement: "-",
+        });
+        const existingPost = await Post.findOne({ slug: slug, _id: { $ne: postId } });
+        if(!existingPost){
+          slug = `${slug}-${Date.now()}`;
+        }
+    }   
+    let image = post.image.secure_url;
+    let public_id = post.image.public_id;
+    if (req.file) {
+      await cloudinary.uploader.destroy(public_id);
+      const transformationOptions = {
+        transformation: [
+          {
+            quality: "auto:low",
+            fetch_format: "avif",
+          },
+        ],
+      };
+
+      const cloudinaryResult = await cloudinary.uploader.upload(
+        req.file.path,
+        transformationOptions
+      );
+
+      image = cloudinaryResult.secure_url;
+      public_id = cloudinaryResult.public_id;
+      await fs.rm(req.file.path);
+    }
+    post.image = {
+      public_id,
+      secure_url: image,
+    };
+    post.title = title;
+    post.content = postBody;
+    post.category = category;
+    post.tags = tags.split(',').map(tag => tag.trim());
+    post.status = status === "true"; 
+    post.slug = slug; 
+    post.image = { public_id, secure_url: image };
+
+    await post.save();
+    req.flash("success_msg", "Post updated successfully");
+    return res.redirect(`/dashboard/articles`);
+  } catch (error) {
+    console.error("Update Post: ", error);
+    res.status(500).json({
+      message: "An unexpected error occurred. Please try again later.",
+    });
+  }
+}
+
+/*
+  Delete Post method
+*/ 
+
+const deletePost=async(req,res,next)=>{
+  try {
+    const postID=req.params.id;
+    if(!postID){
+      req.flash("error_msg","Invalid post ID");
+      return res.redirect("/dashboard/articles");
+    }
+    const deletedPost=await Post.findByIdAndDelete({_id:postID});
+    if(!deletedPost){
+      req.flash("error_msg","Failed to delete post");
+      return res.redirect("/dashboard/articles");
+    }
+    req.flash("success_msg", "Post deleted successfully!");
+    return res.redirect("/dashboard/articles");
+  } catch (error) {
+    console.log(`Delete post error : ${error}`);
+    res.redirect("/error");
+  }
+}
 /*
   Update User Method
 */
@@ -313,4 +432,7 @@ export {
   updateUser,
   addComment,
   doReplay,
+  changePostStatus,
+  deletePost,
+  updatePost
 };
