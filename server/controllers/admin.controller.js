@@ -51,6 +51,12 @@ const deleteCategory = async (req, res, next) => {
       req.flash("error_msg", "Invalid category ID");
       return res.redirect("/dashboard/categories");
     }
+    let uncategorized = await Category.findOne({ name: 'uncategorized' });
+    if(!uncategorized){
+      uncategorized = await Category.create({ name: 'uncategorized' });
+      await uncategorized.save();
+    }
+    await Post.updateMany({ category: catID }, { $set: { category: uncategorized._id } });
     const deletedCategory = await Category.findByIdAndDelete({ _id: catID });
     if (!deletedCategory) {
       req.flash("error_msg", "Failed to delete category");
